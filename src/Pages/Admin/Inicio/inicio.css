@@ -1,0 +1,94 @@
+.inicio-container {
+  padding: 2rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.bienvenida {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.bienvenida h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.bienvenida p {
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+/* Sección accesos rápidos */
+.accesos-rapidos h2,
+.metricas h2,
+.novedades h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card.acceso h3 {
+  font-size: 1.2rem;
+}
+
+.card.acceso button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card.acceso button:hover {
+  background: #1d4ed8;
+}
+
+.card.metrica {
+  text-align: center;
+}
+
+.card.metrica h3 {
+  font-size: 2rem;
+  color: #1e40af;
+}
+
+.card.metrica p {
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Novedades */
+.novedades ul {
+  list-style: none;
+  padding: 0;
+}
+
+.novedades li {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}

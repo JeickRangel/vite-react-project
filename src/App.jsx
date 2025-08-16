@@ -1,0 +1,64 @@
+import { Routes, Route, Navigate } from "react-router-dom";
+import AdminLayout from "./Layouts/AdminLayout";
+//Aqui se importan los modulos ↓
+import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
+import Inicio from "./Pages/Admin/Inicio/inicio";
+
+export default function App() {
+  return (
+    <Routes>
+      {/* 
+        Ruta principal del administrador 
+        - Usa AdminLayout para mantener un mismo diseño (Header, Footer, etc.)
+        - Dentro de esta ruta puedes poner todas las sub-rutas del admin
+      */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Inicio />} />
+        <Route path="servicios" element={<AdminServicios />} />
+        {/* más módulos */}
+        
+      </Route>
+
+      {/* Ruta por defecto: redirige a /admin/servicios */}
+      <Route path="*" element={<Navigate to="/admin" />} />
+    </Routes>
+  );
+}
+
+
+
+/*
+//Importa el componente Header desde su carpeta modular
+import Header from './components/Header/Header';
+//Importa el componente Footer
+import Footer from './components/Footer/Footer'; 
+// Importa los estilos globales del proyecto (resets, variables)
+import './styles/index.css'; 
+
+function App() {
+  return (
+    <>
+    {/* Encabezado reutilizable con título dinámico *
+      <Header/>
+   /}
+      
+
+      {/* 
+        
+        Área principal del contenido del dashboard 
+
+
+      <main style={{ padding: '2rem' }}>
+        <h2>Bienvenido al dashboard</h2>
+        <p>Aquí irá el contenido principal.</p>
+      </main>
+
+      <Footer /> 
+    </>
+  );
+}
+
+export default App;
+
+
+*/
