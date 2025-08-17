@@ -1,0 +1,159 @@
+.admin-reservas {
+  padding: 20px;
+}
+
+.admin-reservas h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Filtros */
+.admin-reservas .filtros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.admin-reservas .filtros input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 250px;
+}
+
+.admin-reservas .botones-filtros button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  background: #f4f4f4;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.admin-reservas .botones-filtros button:hover {
+  background: #ddd;
+}
+
+/* Tabla */
+.admin-reservas .tabla-reservas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.admin-reservas .tabla-reservas th,
+.admin-reservas .tabla-reservas td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.admin-reservas .tabla-reservas th {
+  background: #f4f4f4;
+}
+
+.admin-reservas .estado {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+.admin-reservas .estado.pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.admin-reservas .estado.confirmada {
+  background: #d4edda;
+  color: #155724;
+}
+
+.admin-reservas .estado.cancelada {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.admin-reservas .tabla-reservas button {
+  margin-right: 5px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.admin-reservas .tabla-reservas button:hover {
+  opacity: 0.9;
+}
+
+.admin-reservas .tabla-reservas button.cancelar {
+  background: #dc3545;
+  color: #fff;
+}
+
+.admin-reservas .tabla-reservas button:not(.cancelar) {
+  background: #007bff;
+  color: #fff;
+}
+
+/* Modal */
+.reservas-modal {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 95%;
+}
+
+.reservas-modal-contenido {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 100%;
+}
+
+.reservas-acciones-modal {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.reservas-acciones-modal button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #000;
+  color: #fff;
+}
+
+/* Botón crear */
+.admin-reservas .crear-btn {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+.admin-reservas .crear-btn:hover {
+  background: #0056b3;
+}
+
+/* Formulario crear */
+.reservas-form-crear input {
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}

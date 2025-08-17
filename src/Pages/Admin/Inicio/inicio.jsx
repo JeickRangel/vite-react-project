@@ -18,8 +18,8 @@ const Inicio = () => {
         <h2>Accesos Rápidos</h2>
         <div className="cards-grid">
           <div className="card acceso">
-            <h3>📅 Citas</h3>
-            <p>Gestiona y organiza las citas de los clientes.</p>
+            <h3>📅 Reservas</h3>
+            <p>Gestiona y organiza las reservas de los clientes.</p>
             <button>Ir a Citas</button>
           </div>
           <div className="card acceso">

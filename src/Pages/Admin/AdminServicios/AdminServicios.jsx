@@ -106,11 +106,11 @@ const AdminServicios = () => {
 
       {/* Modal Crear/editar*/}
       {modalAbierto && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="admin-modal-overlay">
+          <div className="admin-modal">
             <h3>{formData.id ? "Editar Servicio" : "Crear Servicio"}</h3>
-            <form className="servicio-form" onSubmit={handleSubmit}>
-              <div className="form-group">
+            <form className="admin-servicio-form" onSubmit={handleSubmit}>
+              <div className="admin-form-group">
                 <label>Nombre del Servicio</label>
                 <input
                   type="text"
@@ -121,7 +121,7 @@ const AdminServicios = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="admin-form-group">
                 <label>Descripción</label>
                 <textarea
                   name="descripcion"
@@ -131,7 +131,7 @@ const AdminServicios = () => {
                 ></textarea>
               </div>
 
-              <div className="form-group">
+              <div className="admin-form-group">
                 <label>Precio</label>
                 <input
                   type="number"
@@ -142,7 +142,7 @@ const AdminServicios = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="admin-form-group">
                 <label>Duración (minutos)</label>
                 <input
                   type="number"
@@ -153,7 +153,7 @@ const AdminServicios = () => {
                 />
               </div>
 
-              <div className="modal-buttons">
+              <div className="admin-modal-buttons">
                 <button type="submit" className="btn-guardar">Guardar</button>
                 <button type="button" className="btn-cerrar" onClick={() => setModalAbierto(false)}>Cancelar</button>
               </div>
@@ -164,13 +164,13 @@ const AdminServicios = () => {
 
       {/* Modal Confirmación Eliminar */}
       {modalEliminar && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="admin-modal-overlay">
+          <div className="admin-modal">
             <h3>Confirmar Eliminación</h3>
             <p>¿Estás seguro de que deseas eliminar <b>{servicioAEliminar?.nombre}</b>?</p>
-            <div className="modal-buttons">
-              <button className="btn-eliminar" onClick={eliminarServicio}>Sí, eliminar</button>
-              <button className="btn-cerrar" onClick={() => setModalEliminar(false)}>Cancelar</button>
+            <div className="admin-modal-buttons">
+              <button className="admin-btn-eliminar" onClick={eliminarServicio}>Sí, eliminar</button>
+              <button className="admin-btn-cerrar" onClick={() => setModalEliminar(false)}>Cancelar</button>
             </div>
           </div>
         </div>
