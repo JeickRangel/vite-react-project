@@ -4,6 +4,7 @@ import AdminLayout from "./Layouts/AdminLayout";
 import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
 import Inicio from "./Pages/Admin/Inicio/inicio";
 import Reservas from "./Pages/Admin/Reservas/reservas";
+import AdminBarberos from "./Pages/Admin/Barberos/AdminBarberos";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route index element={<Inicio />} />
         <Route path="servicios" element={<AdminServicios />} />
         <Route path="reservas" element={<Reservas />} />
+        <Route path="AdminBarberos" element={<AdminBarberos />} />
         {/* más módulos */}
         
       </Route>

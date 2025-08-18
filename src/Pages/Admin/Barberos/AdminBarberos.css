@@ -1,0 +1,178 @@
+/* --- Scope: admin-barberos (todo con este prefijo para evitar colisiones) --- */
+.admin-barberos * { box-sizing: border-box; }
+
+.admin-barberos {
+  max-width: 100%;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  border-radius: 12px;
+  min-height: calc(100vh - 160px); /* ajusta según header/footer */
+  overflow: auto;
+  box-sizing: border-box;
+  border-color: #0f172a;
+}
+
+/* título */
+.admin-barberos__title {
+  margin: 0 0 1rem;
+  text-align: left;
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* add button */
+.admin-barberos__btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.admin-barberos__btn--add {
+  background: #2563eb;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+.admin-barberos__btn--add:hover { background: #1e40af; }
+
+/* table */
+.admin-barberos__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #e6eefc;    
+  box-shadow: 0 4px 12px rgba(2,6,23,0.1);
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+
+.admin-barberos__table th,
+.admin-barberos__table td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: middle;
+  border: 1px solid #cbd5e1;
+}
+.admin-barberos__table th {
+  background: #f8fafc;
+  font-weight: 700;
+  color: #0f172a;
+}
+.admin-barberos__table tr:hover { background: #fbfdff; }
+
+/* photo */
+.admin-barberos__photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 2px solid #e6eefc;
+}
+.admin-barberos__photo--empty {
+  display:inline-block;
+  padding: 0.25rem 0.5rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 6px;
+}
+
+/* actions in table */
+.admin-barberos__actions { display:flex; gap:0.5rem; }
+.admin-barberos__btn--edit { background: #f59e0b; color: #fff; }
+.admin-barberos__btn--edit:hover { background: #d97706; }
+.admin-barberos__btn--delete { background: #dc2626; color:#fff; }
+.admin-barberos__btn--delete:hover { background: #b91c1c; }
+
+/* ---------- Modal (overlay + dialog) ---------- */
+.admin-barberos__overlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(2,6,23,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 1rem;
+  z-index: 9999;
+}
+
+/* dialog: column layout so form can scroll and actions remain visible */
+.admin-barberos__dialog{
+  width: 100%;
+  max-width: 640px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.25);
+  padding: 1rem;
+  display:flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+/* dialog title */
+.admin-barberos__dialog-title {
+  margin: 0 0 0.5rem;
+  text-align: left;
+  font-size: 1.125rem;
+  color: #0f172a;
+}
+
+/* form area scrolls if needed */
+.admin-barberos__form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 0.8rem;
+  overflow-y: auto;
+  padding-right: 0.25rem; /* small space for scrollbar */
+  flex: 1; /* take available vertical space so actions stay visible */
+}
+
+/* labels span full width */
+.admin-barberos__label{ grid-column: 1 / -1; font-weight:600; color:#374151; font-size:0.9rem; margin-top:6px; }
+
+/* inputs take full width */
+.admin-barberos__input,
+.admin-barberos__select,
+.admin-barberos__file{
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e6eefc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #fff;
+}
+.admin-barberos__input:focus,
+.admin-barberos__select:focus,
+.admin-barberos__file:focus { box-shadow: 0 6px 18px rgba(37,99,235,0.08); border-color:#2563eb; }
+
+/* preview spans full width */
+.admin-barberos__preview { grid-column: 1 / -1; display:flex; justify-content:center; margin-top: 0.5rem; }
+.admin-barberos__preview-img { width:110px; height:110px; object-fit:cover; border-radius:10px; border: 2px solid #e6eefc; }
+
+/* dialog actions always visible at bottom */
+.admin-barberos__dialog-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:0.6rem;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* action buttons */
+.admin-barberos__btn--confirm { background: #111827; color:#fff; padding:0.55rem 0.9rem; border-radius:8px; }
+.admin-barberos__btn--confirm:hover { background:#374151; }
+.admin-barberos__btn--cancel { background:#6b7280; color:#fff; padding:0.55rem 0.9rem; border-radius:8px; }
+.admin-barberos__btn--cancel:hover { background:#4b5563; }
+
+/* responsive: single-column form */
+@media (max-width: 640px) {
+  .admin-barberos__form { grid-template-columns: 1fr; }
+  .admin-barberos { padding: 1rem; min-height: auto; }
+  .admin-barberos__dialog { max-width: 95vw; padding: 0.75rem; }
+}
