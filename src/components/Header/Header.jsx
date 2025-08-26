@@ -18,8 +18,8 @@ function Header({ title }) {
         <Link to="/admin/AdminBarberos">Barberos</Link>
         <Link to="/admin/usuarios">Usuarios</Link>
         <Link to="/admin/reportes">Reportes</Link>
-        <Link to="/admin/configuracion">Configuración</Link>
-        <Link to="/admin/pqrs">PQRS</Link>
+        <Link to="/admin/AdminConfiguracion">Configuración</Link>
+        <Link to="/admin/AdminPQRS">PQRS</Link>
       </nav>
 
       <button className={styles.logout}>Salir</button>

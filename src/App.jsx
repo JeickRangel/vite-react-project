@@ -5,6 +5,9 @@ import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
 import Inicio from "./Pages/Admin/Inicio/inicio";
 import Reservas from "./Pages/Admin/Reservas/reservas";
 import AdminBarberos from "./Pages/Admin/Barberos/AdminBarberos";
+import Reportes from "./Pages/Admin/Reportes/AdminReportes";
+import AdminConfiguracion from "./Pages/Admin/Configuracion/AdminConfiguracion";
+import AdminPQRS from "./Pages/Admin/PQRS/AdminPQRS";
 
 export default function App() {
   return (
@@ -19,6 +22,9 @@ export default function App() {
         <Route path="servicios" element={<AdminServicios />} />
         <Route path="reservas" element={<Reservas />} />
         <Route path="AdminBarberos" element={<AdminBarberos />} />
+        <Route path="Reportes" element={<Reportes />} />
+        <Route path="AdminConfiguracion" element={<AdminConfiguracion />} />
+        <Route path="AdminPQRS" element={<AdminPQRS />} />
         {/* más módulos */}
         
       </Route>

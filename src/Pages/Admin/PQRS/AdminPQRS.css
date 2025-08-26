@@ -1,0 +1,61 @@
+.pqrs-container {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pqrs-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.pqrs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pqrs-table th, .pqrs-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.pqrs-table th {
+  background-color: #343a40;
+  color: white;
+}
+
+.pqrs-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.btn-detalle,
+.btn-resolver {
+  padding: 6px 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-detalle {
+  background-color: #007bff;
+}
+
+.btn-resolver {
+  background-color: #28a745;
+}
+
+.btn-detalle:hover {
+  background-color: #0056b3;
+}
+
+.btn-resolver:hover {
+  background-color: #218838;
+}
