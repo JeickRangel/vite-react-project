@@ -16,7 +16,7 @@ function Header({ title }) {
         <Link to="/admin/reservas">Reservas</Link>
         <Link to="/admin/servicios">Servicios</Link> 
         <Link to="/admin/AdminBarberos">Barberos</Link>
-        <Link to="/admin/usuarios">Usuarios</Link>
+        <Link to="/admin/AdminUsuarios">Usuarios</Link>
         <Link to="/admin/reportes">Reportes</Link>
         <Link to="/admin/AdminConfiguracion">Configuración</Link>
         <Link to="/admin/AdminPQRS">PQRS</Link>
