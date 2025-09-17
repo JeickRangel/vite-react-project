@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "./Layouts/AdminLayout";
 import ClientLayout from "./Layouts/ClientLayout";
+import EmployeeLayout from "./Layouts/EmployeeLayout";
 
 //Paginas de administrador ↓
 import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
@@ -16,6 +17,15 @@ import AdminUsuarios from "./Pages/Admin/AdminUsuarios/AdminUsuarios";
 import InicioCliente from "./Pages/Cliente/inicio/inicio";
 import ReservarCita from "./Pages/Cliente/Reservar/reservar";
 import ServiciosCliente from "./Pages/Cliente/servicios/ServiciosCliente";
+import BarberosCliente from "./Pages/Cliente/barberos/BarberosCliente";
+import MisCitas from "./Pages/Cliente/mis_citas/MisCitas";
+import Contacto from "./Pages/Cliente/contacto/Contacto";
+import PQRS from "./Pages/Cliente/PQRS/pqrs";
+
+// Páginas Empleado
+import InicioEmpleado from "./Pages/Empleado/InicioEmpleado/InicioEmpleado";
+import MisCitasEmpleado from './Pages/Empleado/Citas_empleado/MisCitasEmpleado';
+import ClientesEmpleado from "./Pages/Empleado/Clientes_empleado/ClientesEmpleado";
 
 export default function App() {
   return (
@@ -45,7 +55,20 @@ export default function App() {
         <Route path="inicio" element={<InicioCliente />} />
         <Route path="reservar" element={<ReservarCita />} />
         <Route path="servicios" element={<ServiciosCliente />} />
+        <Route path="BarberosCliente" element={<BarberosCliente />} />
+        <Route path="MisCitas" element={<MisCitas />} />
+        <Route path="Contacto" element={<Contacto />} />
+        <Route path="PQRS" element={<PQRS />} />
         {/* Aquí puedes agregar más rutas del cliente */}
+      </Route>
+
+      {/* Rutas para Empleado */}
+      <Route path="/empleado" element={<EmployeeLayout />}>
+        <Route index element={<InicioEmpleado />} />
+        <Route path="InicioEmpleado" element={<InicioEmpleado />} />
+        <Route path="MisCitasEmpleado" element={<MisCitasEmpleado />} />
+        <Route path="ClientesEmpleado" element={<ClientesEmpleado />} />
+        {/* Aquí puedes agregar más rutas del empleado */}
       </Route>
 
 

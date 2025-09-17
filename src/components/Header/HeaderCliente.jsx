@@ -3,7 +3,7 @@ import styles from './HeaderCliente.module.css';
 import logo from '../../assets/Logo.png';
 
 
-function Header({ title }) {
+function HeaderCliente({ title }) {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -15,10 +15,10 @@ function Header({ title }) {
         <Link to="/Cliente/inicio">Inicio</Link>
         <Link to="/Cliente/reservar">Reservar</Link>
         <Link to="/Cliente/servicios">Servicios</Link> 
-        <Link to="/Cliente/Barberos">Barberos</Link>
-        <Link to="/Cliente/AdminUsuarios">Mis Citas</Link>
-        <Link to="/Cliente/reportes">Contáctenos</Link>
-        <Link to="/Cliente/AdminPQRS">PQRS</Link>
+        <Link to="/Cliente/BarberosCliente">Barberos</Link>
+        <Link to="/Cliente/MisCitas">Mis Citas</Link>
+        <Link to="/Cliente/contacto">Contáctenos</Link>
+        <Link to="/Cliente/pqrs">PQRS</Link>
       </nav>
 
       <button className={styles.logout}>Salir</button>
@@ -26,4 +26,4 @@ function Header({ title }) {
   );
 }
 
-export default Header;
+export default HeaderCliente;

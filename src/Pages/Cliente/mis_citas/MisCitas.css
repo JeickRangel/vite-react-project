@@ -1,0 +1,74 @@
+/* Reset pequeño solo para este módulo */
+.mis-citas-contenedor * {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.mis-citas-contenedor {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+  color: #222;
+  min-height: 100vh;
+}
+
+.mis-citas-contenedor h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+/* GRID DE CITAS */
+.mis-grid-citas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.mis-cita-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.mis-cita-card:hover {
+  transform: translateY(-5px);
+}
+
+.mis-cita-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.mis-cita-card p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.mis-cita-card button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.mis-cita-card button:hover {
+  background: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .mis-citas-contenedor {
+    padding: 20px 10px;
+  }
+}

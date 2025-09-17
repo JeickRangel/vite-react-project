@@ -1,0 +1,67 @@
+/* Estilos exclusivos del dashboard del empleado */
+.empleado-dashboard {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+  min-height: 80vh; /* deja espacio para header y footer */
+}
+
+.empleado-dashboard h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.dashboard-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+}
+
+.dashboard-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #111;
+}
+
+.dashboard-card p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.dashboard-card button {
+  margin-top: 12px;
+  padding: 10px 18px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.dashboard-card button:hover {
+  background: #000;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .empleado-dashboard {
+    padding: 20px 10px;
+  }
+
+  .dashboard-card {
+    padding: 15px;
+  }
+}

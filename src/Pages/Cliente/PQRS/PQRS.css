@@ -1,0 +1,142 @@
+/* Reset solo para este módulo */
+.pqrs-contenedor * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.pqrs-contenedor {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+  background: #fff;
+  color: #222;
+}
+
+.pqrs-contenedor h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.pqrs-contenedor .intro {
+  text-align: center;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* Grid con dos columnas: formulario y lista */
+.pqrs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* Formulario */
+.pqrs-form form {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.pqrs-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #444;
+}
+
+.pqrs-form select,
+.pqrs-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.pqrs-form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pqrs-form button:hover {
+  background: #000;
+}
+
+/* Lista de PQRS */
+.pqrs-lista h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.pqrs-lista ul {
+  list-style: none;
+}
+
+.pqrs-lista li {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.pqrs-lista .tipo {
+  font-weight: bold;
+  color: #222;
+}
+
+.pqrs-lista .texto {
+  margin: 8px 0;
+  color: #555;
+}
+
+.pqrs-lista .fecha {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.pqrs-lista .estado {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+.pqrs-lista .estado-1 {
+  background: #f0ad4e;
+} /* Pendiente */
+.pqrs-lista .estado-2 {
+  background: #5bc0de;
+} /* En Proceso */
+.pqrs-lista .estado-3 {
+  background: #5cb85c;
+} /* Completado */
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .pqrs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pqrs-contenedor {
+    padding: 20px 10px;
+  }
+}

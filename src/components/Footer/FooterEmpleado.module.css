@@ -1,0 +1,70 @@
+.footer {
+  background-color: #222; /* Oscuro para diferenciar del cliente */
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  bottom: 0; 
+  left: 0; 
+  width: 100%;
+  z-index: 10;
+  color: #fff;
+}
+
+.logoFooter {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+.social {
+  padding: 15px;
+}
+
+.iconos img {
+  max-width: 30px;
+  margin-top: 20px;
+  margin-left: 10px;
+  filter: brightness(0) invert(1); /* pone íconos claros sobre fondo oscuro */
+  transition: 0.3s;
+}
+
+.iconos img:hover {
+  transform: scale(1.1);
+}
+
+.links {
+  display: flex;
+  gap: 40px;
+  flex: 2 1 500px;
+}
+
+.links h4 {
+  margin-bottom: 10px;
+  color: #f39c12; /* dorado para resaltar */
+}
+
+.links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.links ul li a {
+  text-decoration: none;
+  color: #ddd;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+
+.links ul li a:hover {
+  color: #f39c12;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

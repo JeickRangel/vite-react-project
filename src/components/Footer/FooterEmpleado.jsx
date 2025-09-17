@@ -1,4 +1,4 @@
-import styles from './FooterCliente.module.css';
+import styles from './FooterEmpleado.module.css';
 
 import logo from '../../assets/Logo.png';
 import instagram from '../../assets/instagram.png';
@@ -6,7 +6,7 @@ import facebook from '../../assets/facebook.png';
 import youtube from '../../assets/youtube.png';
 import twitter from '../../assets/twitter.png';
 
-function FooterCliente() {
+function FooterEmpleado() {
   return (
     <footer className={styles.footer}>
       {/* Sección Social */}
@@ -24,33 +24,31 @@ function FooterCliente() {
       {/* Sección Links */}
       <div className={styles.links}>
         <div>
-          <h4>Nosotros</h4>
+          <h4>Panel Empleado</h4>
           <ul>
             <li><a href="#">Inicio</a></li>
-            <li><a href="#">Reservas</a></li>
-            <li><a href="#">Servicios</a></li>
-            <li><a href="#">Barberos</a></li>
             <li><a href="#">Mis Citas</a></li>
-            <li><a href="#">Contáctanos</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Más</h4>
-          <ul>
-            <li><a href="#">Promociones</a></li>
-            <li><a href="#">Galería</a></li>
-            <li><a href="#">Nuestra Historia</a></li>
-            <li><a href="#">Reseñas</a></li>
-            <li><a href="#">PQRS</a></li>
+            <li><a href="#">Clientes</a></li>
+            <li><a href="#">Reportes</a></li>
+            <li><a href="#">Perfil</a></li>
           </ul>
         </div>
         <div>
           <h4>Recursos</h4>
           <ul>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Prácticas</a></li>
+            <li><a href="#">Capacitaciones</a></li>
+            <li><a href="#">Manual de uso</a></li>
             <li><a href="#">Soporte</a></li>
-            <li><a href="#">Redes sociales</a></li>
+            <li><a href="#">Normativas</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Comunidad</h4>
+          <ul>
+            <li><a href="#">Eventos</a></li>
+            <li><a href="#">Promociones</a></li>
+            <li><a href="#">Noticias</a></li>
+            <li><a href="#">Redes internas</a></li>
           </ul>
         </div>
       </div>
@@ -58,4 +56,4 @@ function FooterCliente() {
   );
 }
 
-export default FooterCliente;
+export default FooterEmpleado;

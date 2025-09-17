@@ -1,0 +1,120 @@
+/* Reset solo para este módulo */
+.contacto-contenedor * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.contacto-contenedor {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+  background: #fff;
+  color: #222;
+}
+
+.contacto-contenedor h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.intro {
+  text-align: center;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+/* Formulario */
+.contacto-form form {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contacto-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #444;
+}
+
+.contacto-form input,
+.contacto-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.contacto-form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.contacto-form button:hover {
+  background: #000;
+}
+
+/* Información */
+.contacto-info {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contacto-info h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.contacto-info p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.contacto-info .iconos {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.contacto-info .iconos img {
+  width: 30px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.contacto-info .iconos img:hover {
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contacto-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contacto-contenedor {
+    padding: 20px 10px;
+  }
+}

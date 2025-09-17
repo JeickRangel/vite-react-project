@@ -1,0 +1,59 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: #222; /* distinto al de cliente */
+  border-bottom: 3px solid #f39c12; /* detalle dorado */
+  top: 0;
+  z-index: 1000;
+  min-height: 70px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 90px;
+  height: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.nav a:hover {
+  background-color: #f39c12;
+  color: #222;
+}
+
+.logout {
+  background-color: #f39c12;
+  color: #222;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.logout:hover {
+  background-color: #fff;
+  color: #222;
+}

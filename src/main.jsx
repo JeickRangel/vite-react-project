@@ -1,10 +1,8 @@
 // src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from "react-router-dom";
 import App from './App.jsx';
-
-//
-import { BrowserRouter } from 'react-router-dom';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -14,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       Todo lo que esté dentro de <BrowserRouter> podrá usar rutas
     */}
     <BrowserRouter>
-    <App />
+      <App />
     </BrowserRouter>
   </React.StrictMode>
-);
+  );
+
+

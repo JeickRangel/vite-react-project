@@ -1,0 +1,37 @@
+.wrapper { padding: 1rem; }
+.header { margin-bottom: .5rem; }
+.toolbar { display: grid; gap: .5rem; margin-bottom: 1rem; }
+.input, .select { padding: .6rem .75rem; border: 1px solid #ddd; border-radius: 10px; }
+
+.tablaWrapper { display: none; }
+.tabla { width: 100%; border-collapse: collapse; min-width: 760px; }
+.tabla th, .tabla td { padding: .75rem; border-bottom: 1px solid #f1f1f1; text-align: left; }
+
+.colAcciones { width: 320px; }
+.vacio { text-align: center; color: #666; padding: 1rem; }
+
+.cards { display: grid; gap: .75rem; }
+.card { border: 1px solid #eee; border-radius: 12px; padding: .75rem; background: #fff; }
+.cardHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
+.cardBody p { margin: .25rem 0; }
+.cardFooter { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .5rem; }
+
+.cliente { display: flex; flex-direction: column; }
+.telefono { font-size: .85rem; color: #666; }
+
+.badge { display: inline-block; padding: .25rem .6rem; border-radius: 999px; font-size: .8rem; text-transform: capitalize; border: 1px solid transparent; }
+.badgePendiente { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.badgeConfirmada { background: #ecfeff; color: #0e7490; border-color: #a5f3fc; }
+.badgeCompletada { background: #ecfdf5; color: #166534; border-color: #a7f3d0; }
+.badgeCancelada { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+
+.btn { padding: .5rem .75rem; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; }
+.btnPrimario { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+.btnPeligro { background: #ef4444; color: #fff; border-color: #ef4444; }
+.btnFantasma { background: #fff; color: #111827; }
+
+@media (min-width: 768px) {
+  .toolbar { grid-template-columns: 1fr 200px 220px; align-items: center; }
+  .tablaWrapper { display: block; margin-top: .5rem; }
+  .cards { display: none; }
+}
