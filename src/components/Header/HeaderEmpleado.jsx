@@ -14,8 +14,8 @@ function HeaderEmpleado({ title }) {
         <Link to="/Empleado/InicioEmpleado">Inicio</Link>
         <Link to="/Empleado/MisCitasEmpleado">Mis Citas</Link>
         <Link to="/Empleado/ClientesEmpleado">Clientes</Link>
-        <Link to="/Empleado/reportes">Reportes</Link>
-        <Link to="/Empleado/perfil">Perfil</Link>
+        <Link to="/Empleado/ReportesEmpleado">Reportes</Link>
+        <Link to="/Empleado/PerfilEmpleado">Perfil</Link>
       </nav>
 
       <button className={styles.logout}>Salir</button>

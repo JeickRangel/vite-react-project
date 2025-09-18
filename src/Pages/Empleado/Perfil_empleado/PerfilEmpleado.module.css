@@ -1,0 +1,160 @@
+/* =========================
+   PERFIL EMPLEADO (aislado)
+   Prefijo pe- en todas las clases
+   ========================= */
+
+.peContainer {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Título */
+.peTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 👈 centra todo horizontalmente */
+  gap: 10px;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+
+.peTitleIcon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.peTitleText {
+  margin: 0;
+  color: #1976d2;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Tarjeta */
+.peCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Layout: foto izquierda + info derecha */
+.peLayout {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 600px) {
+  .peLayout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Avatar */
+.peAvatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Info */
+.peInfo {
+  text-align: left;
+}
+
+.peInfo p {
+  margin: 8px 0;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.peKey {
+  font-weight: 700;
+}
+
+/* Botones principales */
+.peBtnPrimary,
+.peBtnSuccess,
+.peBtnDanger {
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.peBtnPrimary {
+  margin-top: 14px;
+  background: #1976d2;
+  color: #fff;
+}
+.peBtnPrimary:hover { background: #135aa3; }
+
+.peActions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.peBtnSuccess {
+  background: #2e7d32;
+  color: #fff;
+}
+.peBtnSuccess:hover { background: #256628; }
+
+.peBtnDanger {
+  background: #d32f2f;
+  color: #fff;
+}
+.peBtnDanger:hover { background: #b22626; }
+
+/* Edición */
+.peSubtitle {
+  margin: 0 0 14px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.peFotoBox {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.peInputFile { margin-top: 10px; }
+
+.peField {
+  margin-bottom: 12px;
+}
+
+.peLabel {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.peInput {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.peInput:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25,118,210,0.15);
+}

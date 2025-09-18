@@ -26,6 +26,9 @@ import PQRS from "./Pages/Cliente/PQRS/pqrs";
 import InicioEmpleado from "./Pages/Empleado/InicioEmpleado/InicioEmpleado";
 import MisCitasEmpleado from './Pages/Empleado/Citas_empleado/MisCitasEmpleado';
 import ClientesEmpleado from "./Pages/Empleado/Clientes_empleado/ClientesEmpleado";
+import ReportesEmpleado from "./Pages/Empleado/Reportes_empleado/ReportesEmpleado";
+import PerfilEmpleado from "./Pages/Empleado/Perfil_empleado/PerfilEmpleado";
+
 
 export default function App() {
   return (
@@ -63,11 +66,13 @@ export default function App() {
       </Route>
 
       {/* Rutas para Empleado */}
-      <Route path="/empleado" element={<EmployeeLayout />}>
+      <Route path="/Empleado" element={<EmployeeLayout />}>
         <Route index element={<InicioEmpleado />} />
         <Route path="InicioEmpleado" element={<InicioEmpleado />} />
         <Route path="MisCitasEmpleado" element={<MisCitasEmpleado />} />
         <Route path="ClientesEmpleado" element={<ClientesEmpleado />} />
+        <Route path="ReportesEmpleado" element={<ReportesEmpleado />} />
+        <Route path="PerfilEmpleado" element={<PerfilEmpleado />} />
         {/* Aquí puedes agregar más rutas del empleado */}
       </Route>
 
