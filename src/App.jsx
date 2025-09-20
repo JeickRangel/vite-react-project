@@ -3,6 +3,7 @@ import AdminLayout from "./Layouts/AdminLayout";
 import ClientLayout from "./Layouts/ClientLayout";
 import EmployeeLayout from "./Layouts/EmployeeLayout";
 import Login from "./Pages/Login/Login"; 
+import Registro from "./Pages/Registro/Registro"; 
 
 //Paginas de administrador ↓
 import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
@@ -36,6 +37,9 @@ export default function App() {
     <Routes>
       {/* Ruta de Login */}
       <Route path="/" element={<Login />} />
+
+      {/* Ruta de Registro */}
+      <Route path="/registro" element={<Registro />} />
 
       {/* 
         Ruta principal del administrador 

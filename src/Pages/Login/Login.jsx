@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styles from "./Login.module.css";
 import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
+import { Link } from "react-router-dom";
+
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -93,13 +96,14 @@ export default function Login() {
               <a href="#">¿Olvidaste tu contraseña?</a>
             </div>
 
-            <button class="submitlogin" type="submit">Ingresar</button>
+            <button  type="submit">Ingresar</button>
           </form>
 
-          <p className={styles.registro}>
-            ¿Eres nuevo?{" "}
-            <a href="/public/Registrousuarios.html">Ingresa aquí</a>
-          </p>
+            <p className={styles.registro}>
+            ¿Eres nuevo? <Link to="/registro">Ingresa aquí</Link>
+            </p>
+
+
         </div>
       </div>
     </div>

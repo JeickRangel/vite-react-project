@@ -1,0 +1,187 @@
+.contenedor {
+  display: flex;
+  min-height: 100vh;
+  flex-wrap: wrap;
+}
+
+.ladoIzquierdo {
+  flex: 1.5;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 40px;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.logo {
+  width: 100px;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+.textoBienvenida {
+  max-width: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 40px;
+  margin-bottom: 340px;
+  align-self: center;
+  text-align: left;
+  color: white;
+}
+
+.formularioLogin {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex;
+  padding: 40px 20px;
+}
+
+.cajaLogin {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  max-width: 450px;
+  width: 100%;
+}
+
+.cajaLogin h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background-color: #111;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.registro {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContenido {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.modalContenido button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .contenedor {
+    flex-direction: column;
+  }
+
+  .ladoIzquierdo,
+  .formularioLogin {
+    flex: 1 1 100%;
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .ladoIzquierdo {
+    order: 1;
+  }
+
+  .formularioLogin {
+    order: 2;
+    align-items: center;
+  }
+
+  .textoBienvenida {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .cajaLogin {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+
+  .logo {
+    width: 80px;
+    margin-top: 10px;
+    align-self: center;
+  }
+
+  input,
+  select,
+  button[type="submit"] {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .textoBienvenida h1 {
+    font-size: 1.5rem;
+  }
+
+  .textoBienvenida p {
+    font-size: 0.95rem;
+  }
+
+  .cajaLogin h2 {
+    font-size: 1.5rem;
+  }
+}
