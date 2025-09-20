@@ -1,0 +1,119 @@
+.contenedor {
+  display: flex;
+  min-height: 100vh;
+  flex-wrap: wrap;
+}
+
+.ladoIzquierdo {
+  flex: 1.5;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 40px;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.logo {
+  width: 100px;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+.fondo {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.textoBienvenida {
+  max-width: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: auto;
+  margin-bottom: 80px;
+  align-self: center;
+  text-align: left;
+  color: white;
+}
+
+.textoBienvenida h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.textoBienvenida p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.formularioLogin {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.cajaLogin {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  max-width: 450px;
+  width: 100%;
+}
+
+.cajaLogin h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background-color: #000000;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.opciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.registro {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}

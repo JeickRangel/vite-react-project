@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "./Layouts/AdminLayout";
 import ClientLayout from "./Layouts/ClientLayout";
 import EmployeeLayout from "./Layouts/EmployeeLayout";
+import Login from "./Pages/Login/Login"; 
 
 //Paginas de administrador ↓
 import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
@@ -33,11 +34,15 @@ import PerfilEmpleado from "./Pages/Empleado/Perfil_empleado/PerfilEmpleado";
 export default function App() {
   return (
     <Routes>
+      {/* Ruta de Login */}
+      <Route path="/" element={<Login />} />
+
       {/* 
         Ruta principal del administrador 
         - Usa AdminLayout para mantener un mismo diseño (Header, Footer, etc.)
         - Dentro de esta ruta puedes poner todas las sub-rutas del admin
       */}
+
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Inicio />} />
         <Route path="Inicio" element={<Inicio />} />
