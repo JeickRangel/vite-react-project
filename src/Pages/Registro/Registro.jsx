@@ -13,9 +13,13 @@ export default function Registro() {
     genero: "",
     tipo_doc: "",
     numero_doc: "",
-    rol: 2, // Cliente
-    estado: 1, // Activo
   });
+
+  const irALogin = () => {
+  setModalExito(false);
+  navigate("/");   // como tu login está en la raíz
+};
+
 
   const [modalExito, setModalExito] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +43,7 @@ export default function Registro() {
         datos.append(key, value)
       );
 
-      const res = await fetch("../php/guardar.php", {
+      const res = await fetch("http://localhost/barberia_app/php/guardar.php", {
         method: "POST",
         body: datos,
       });
@@ -56,11 +60,6 @@ export default function Registro() {
       console.error("Error:", error);
       alert("Hubo un error al enviar el formulario.");
     }
-  };
-
-  const irALogin = () => {
-    setModalExito(false);
-    navigate("/login"); // 👈 te lleva al login en React Router
   };
 
   return (
