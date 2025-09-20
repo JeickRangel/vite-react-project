@@ -1,9 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
+import { clearUser, getUser } from "../../utils/auth";
 import styles from './Header.module.css';
 import logo from '../../assets/Logo.png';
 
 
 function Header({ title }) {
+
+  const navigate = useNavigate();
+  const usuario = getUser(); // opcional, para mostrar el nombre
+
+  const logout = () => {
+    clearUser(); // ❌ borrar usuario del localStorage
+    navigate("/", { replace: true }); // 🔄 redirigir al login
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -22,7 +32,10 @@ function Header({ title }) {
         <Link to="/admin/AdminPQRS">PQRS</Link>
       </nav>
 
-      <button className={styles.logout}>Salir</button>
+      <div className={styles.userSection}>
+        {usuario && <span className={styles.userName}>Hola, {usuario.nombre}</span>}
+        <button onClick={logout} className={styles.logout}>Salir</button>
+      </div>
     </header>
   );
 }

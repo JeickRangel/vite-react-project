@@ -58,6 +58,8 @@
   max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .cerrar {
@@ -185,5 +187,25 @@
   .tabla td::before {
     content: attr(data-label);
     font-weight: bold;
+  }
+}
+.success {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+
+
+@media screen and (max-height: 600px) {
+  .modalContenido {
+    max-height: 80vh;
+    overflow-y: auto;
   }
 }

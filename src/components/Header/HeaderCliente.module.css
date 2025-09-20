@@ -48,10 +48,25 @@
 }
 
 .logout {
-  background-color: #222;
-  color: #fff;
+  background: red;
+  color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-left: 10px;
+}
+
+.logout:hover {
+  background: darkred;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userName {
+  font-weight: bold;
 }

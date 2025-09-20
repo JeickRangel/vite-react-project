@@ -10,24 +10,29 @@ function AdminUsuarios() {
   const [numero_documento, setNumeroDoc] = useState("");
   const [rol, setRol] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState(""); // ✅ success o error
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioEditando, setUsuarioEditando] = useState(null);
 
   useEffect(() => {
-    fetch("/barberiaApp/php/usuarios.php")
+    recargarUsuarios();
+  }, []);
+
+  const recargarUsuarios = () => {
+    fetch("http://localhost/barberia_app/php/usuarios.php")
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((error) => console.error("Error cargando usuarios:", error));
-  }, []);
+  };
 
   const obtenerNombreRol = (valor) => {
     switch (String(valor)) {
       case "1":
         return "Administrador";
       case "2":
-        return "Cliente";
-      case "3":
         return "Empleado";
+      case "3":
+        return "Cliente";
       default:
         return "";
     }
@@ -47,13 +52,80 @@ function AdminUsuarios() {
     setNumeroDoc("");
     setRol("");
     setMensaje("");
+    setTipoMensaje("");
     setUsuarioEditando(null);
   };
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
     setMensaje("");
-    // Validaciones y fetch aquí...
+    setTipoMensaje("");
+
+    const usuarioData = {
+      id: usuarioEditando?.id,
+      nombre,
+      correo,
+      genero,
+      tipo_documento,
+      numero_documento,
+      rol,
+    };
+
+    try {
+      const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+        method: usuarioEditando ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(usuarioData),
+      });
+
+      const data = await res.json();
+      if (data.status === "OK") {
+        setTipoMensaje("success");
+        setMensaje(data.message || "Guardado correctamente ✅");
+        cerrarModal();
+        recargarUsuarios();
+      } else {
+        setTipoMensaje("error");
+        setMensaje(data.message || "Error desconocido");
+      }
+    } catch (error) {
+      setTipoMensaje("error");
+      setMensaje("Error de conexión con el servidor");
+      console.error("Error:", error);
+    }
+  };
+
+  const editarUsuario = (usuario) => {
+    setUsuarioEditando(usuario);
+    setNombre(usuario.nombre);
+    setCorreo(usuario.correo);
+    setGenero(usuario.genero);
+    setTipoDoc(usuario.tipo_documento);
+    setNumeroDoc(usuario.numero_documento);
+    setRol(usuario.rol);
+    setModalAbierto(true);
+  };
+
+  const eliminarUsuario = async (id) => {
+    if (!window.confirm("¿Seguro que quieres eliminar este usuario?")) return;
+
+    try {
+      const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${id}`,
+      });
+
+      const data = await res.json();
+      if (data.status === "OK") {
+        setUsuarios(usuarios.filter((u) => u.id !== id));
+      } else {
+        alert("Error al eliminar: " + (data.message || "Desconocido"));
+      }
+    } catch (error) {
+      alert("❌ Error de conexión al eliminar");
+      console.error(error);
+    }
   };
 
   return (
@@ -86,10 +158,71 @@ function AdminUsuarios() {
                 onChange={(e) => setNombre(e.target.value)}
                 required
               />
-              {/* ... resto de inputs */}
+
+              <label>Correo:</label>
+              <input
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+
+              <label>Género:</label>
+              <select
+                value={genero}
+                onChange={(e) => setGenero(e.target.value)}
+                required
+              >
+                <option value="">Seleccione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+              </select>
+
+              <label>Tipo de documento:</label>
+              <select
+                value={tipo_documento}
+                onChange={(e) => setTipoDoc(e.target.value)}
+                required
+              >
+                <option value="">Seleccione</option>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="TI">Tarjeta de Identidad</option>
+                <option value="CE">Cédula de Extranjería</option>
+              </select>
+
+              <label>Número de documento:</label>
+              <input
+                value={numero_documento}
+                onChange={(e) => setNumeroDoc(e.target.value)}
+                required
+              />
+
+              <label>Rol:</label>
+              <select
+                value={rol}
+                onChange={(e) => setRol(e.target.value)}
+                required
+              >
+                <option value="">Seleccione</option>
+                <option value="1">Administrador</option>
+                <option value="2">Empleado</option>
+                <option value="3">Cliente</option>
+              </select>
+
               <button type="submit" className={styles.botonGuardar}>
                 Guardar
               </button>
+
+              {mensaje && (
+                <p
+                  className={
+                    tipoMensaje === "success" ? styles.success : styles.error
+                  }
+                >
+                  {mensaje}
+                </p>
+              )}
             </form>
           </div>
         </div>

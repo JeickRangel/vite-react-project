@@ -1,15 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
-import { Link } from "react-router-dom";
-
-
+import { Link, useNavigate } from "react-router-dom";
+import { setUser, getUser } from "../../utils/auth"; // ✅ importamos helpers
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorLogin, setErrorLogin] = useState("");
+  const navigate = useNavigate();
+
+  // ✅ Si ya está logueado, lo mando directo a su vista
+  useEffect(() => {
+    const usuario = getUser();
+    if (usuario) {
+      if (usuario.rol === 1) {
+        navigate("/admin/Inicio", { replace: true });
+      } else if (usuario.rol === 2) {
+        navigate("/Empleado/InicioEmpleado", { replace: true });
+      } else {
+        navigate("/Cliente/inicio", { replace: true });
+      }
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,19 +34,28 @@ export default function Login() {
     formData.append("password", password);
 
     try {
-      const res = await fetch("../php/login.php", {
+      const res = await fetch("http://localhost/barberia_app/php/login.php", {
         method: "POST",
         body: formData,
       });
       const respuesta = await res.json();
 
       if (respuesta.status === "OK") {
-        if (respuesta.rol === 1) {
-          navigate("/admin/Inicio");
-        } else if (respuesta.rol === 2) {
-          navigate("/Empleado/InicioEmpleado");
+        // ✅ Guardar usuario en localStorage
+        setUser({
+          id: respuesta.usuario.id,
+          nombre: respuesta.usuario.nombre,
+          correo: respuesta.usuario.correo,
+          rol: respuesta.usuario.rol,
+        });
+
+        // ✅ Redirigir según rol
+        if (respuesta.usuario.rol === 1) {
+          navigate("/admin/Inicio", { replace: true });
+        } else if (respuesta.usuario.rol === 2) {
+          navigate("/Empleado/InicioEmpleado", { replace: true });
         } else {
-          navigate("/Cliente/InicioCliente");
+          navigate("/Cliente/inicio", { replace: true });
         }
       } else {
         setErrorLogin(respuesta.message || "Credenciales incorrectas.");
@@ -53,8 +76,8 @@ export default function Login() {
         <div className={styles.textoBienvenida}>
           <h1>Agenda tu cita ahora</h1>
           <p>
-            ¿Estás buscando un estilo de cabello que te haga sentir como un rey? 
-            Nuestros expertos barberos te ofrecen un servicio de calidad. 
+            ¿Estás buscando un estilo de cabello que te haga sentir como un rey?
+            Nuestros expertos barberos te ofrecen un servicio de calidad.
             Agenda tu cita en línea ahora.
           </p>
         </div>
@@ -96,14 +119,12 @@ export default function Login() {
               <a href="#">¿Olvidaste tu contraseña?</a>
             </div>
 
-            <button  type="submit">Ingresar</button>
+            <button type="submit">Ingresar</button>
           </form>
 
-            <p className={styles.registro}>
+          <p className={styles.registro}>
             ¿Eres nuevo? <Link to="/registro">Ingresa aquí</Link>
-            </p>
-
-
+          </p>
         </div>
       </div>
     </div>
