@@ -128,6 +128,32 @@ function AdminUsuarios() {
     }
   };
 
+  const resetearPassword = async (id) => {
+  if (!window.confirm("¿Seguro que quieres reiniciar la contraseña a '123456'?")) return;
+
+  try {
+    const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, resetPassword: true }),
+    });
+
+    const data = await res.json();
+    if (data.status === "OK") {
+      setTipoMensaje("success");
+      setMensaje(data.message); // ✅ muestra el mensaje en el modal
+    } else {
+      setTipoMensaje("error");
+      setMensaje("Error al resetear: " + (data.message || "Desconocido"));
+    }
+  } catch (error) {
+    setTipoMensaje("error");
+    setMensaje("❌ Error de conexión al resetear contraseña");
+    console.error(error);
+  }
+};
+
+
   return (
     <div className={styles.contenedor}>
       <header className={styles.header}>
@@ -214,6 +240,16 @@ function AdminUsuarios() {
                 Guardar
               </button>
 
+              {usuarioEditando && (
+  <button
+    type="button"
+    className={styles.botonReset}
+    onClick={() => resetearPassword(usuarioEditando.id)}
+  >
+    Resetear contraseña
+  </button>
+)}
+
               {mensaje && (
                 <p
                   className={
@@ -266,6 +302,7 @@ function AdminUsuarios() {
                     >
                       Eliminar
                     </button>
+
                   </td>
                 </tr>
               ))}

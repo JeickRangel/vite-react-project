@@ -201,6 +201,19 @@
   margin-top: 10px;
 }
 
+.botonReset {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.botonReset:hover {
+  background-color: darkorange;
+}
 
 
 @media screen and (max-height: 600px) {
