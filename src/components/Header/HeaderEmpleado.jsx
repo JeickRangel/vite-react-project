@@ -1,8 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
+import { clearUser, getUser } from "../../utils/auth";
 import styles from './HeaderEmpleado.module.css';
 import logo from '../../assets/Logo.png';
 
 function HeaderEmpleado({ title }) {
+  const navigate = useNavigate();
+  const usuario = getUser();
+
+  const logout = () => {
+    clearUser(); // ❌ borrar la sesión
+    navigate("/", { replace: true }); // 🔄 redirigir al login
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -18,7 +27,12 @@ function HeaderEmpleado({ title }) {
         <Link to="/Empleado/PerfilEmpleado">Perfil</Link>
       </nav>
 
-      <button className={styles.logout}>Salir</button>
+      <div className={styles.userSection}>
+        {usuario && <span className={styles.userName}>Hola, {usuario.nombre}</span>}
+        <button onClick={logout} className={styles.logout}>
+          Salir
+        </button>
+      </div>
     </header>
   );
 }

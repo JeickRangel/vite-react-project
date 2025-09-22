@@ -37,23 +37,31 @@
   transition: 0.3s;
 }
 
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .nav a:hover {
   background-color: #f39c12;
   color: #222;
 }
 
-.logout {
-  background-color: #f39c12;
-  color: #222;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
+.userName {
   font-weight: bold;
-  transition: 0.3s;
+  color: #fdfdfd;
+}
+
+.logout {
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .logout:hover {
-  background-color: #fff;
-  color: #222;
+  background: darkred;
 }

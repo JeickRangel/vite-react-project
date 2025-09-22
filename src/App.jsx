@@ -1,4 +1,6 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import AdminLayout from "./Layouts/AdminLayout";
 import ClientLayout from "./Layouts/ClientLayout";
 import EmployeeLayout from "./Layouts/EmployeeLayout";
@@ -35,10 +37,9 @@ import PerfilEmpleado from "./Pages/Empleado/Perfil_empleado/PerfilEmpleado";
 export default function App() {
   return (
     <Routes>
-      {/* Ruta de Login */}
+      {/* Rutas publicas */}
       <Route path="/" element={<Login />} />
-
-      {/* Ruta de Registro */}
+      <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
 
       {/* 
@@ -47,6 +48,7 @@ export default function App() {
         - Dentro de esta ruta puedes poner todas las sub-rutas del admin
       */}
 
+      <Route element={<ProtectedRoute allowedRoles={[1]} />}>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Inicio />} />
         <Route path="Inicio" element={<Inicio />} />
@@ -58,10 +60,11 @@ export default function App() {
         <Route path="AdminPQRS" element={<AdminPQRS />} />
         <Route path="AdminUsuarios" element={<AdminUsuarios />} />
         {/* más módulos */}
-        
+        </Route>
       </Route>
 
       {/* Rutas para Cliente */}
+      <Route element={<ProtectedRoute allowedRoles={[3]} />}>
       <Route path="/cliente" element={<ClientLayout />}>
         <Route index element={<InicioCliente />} />
         <Route path="inicio" element={<InicioCliente />} />
@@ -73,8 +76,10 @@ export default function App() {
         <Route path="PQRS" element={<PQRS />} />
         {/* Aquí puedes agregar más rutas del cliente */}
       </Route>
+      </Route>
 
       {/* Rutas para Empleado */}
+    <Route element={<ProtectedRoute allowedRoles={[2]} />}>
       <Route path="/Empleado" element={<EmployeeLayout />}>
         <Route index element={<InicioEmpleado />} />
         <Route path="InicioEmpleado" element={<InicioEmpleado />} />
@@ -84,6 +89,7 @@ export default function App() {
         <Route path="PerfilEmpleado" element={<PerfilEmpleado />} />
         {/* Aquí puedes agregar más rutas del empleado */}
       </Route>
+    </Route>
 
 
     </Routes>
