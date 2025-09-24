@@ -7,6 +7,7 @@ import EmployeeLayout from "./Layouts/EmployeeLayout";
 import Login from "./Pages/Login/Login"; 
 import Registro from "./Pages/Registro/Registro"; 
 
+
 //Paginas de administrador ↓
 import AdminServicios from "./Pages/Admin/AdminServicios/AdminServicios";
 import Inicio from "./Pages/Admin/Inicio/inicio";
@@ -16,6 +17,7 @@ import Reportes from "./Pages/Admin/Reportes/AdminReportes";
 import AdminConfiguracion from "./Pages/Admin/Configuracion/AdminConfiguracion";
 import AdminPQRS from "./Pages/Admin/PQRS/AdminPQRS";
 import AdminUsuarios from "./Pages/Admin/AdminUsuarios/AdminUsuarios";
+import AdminDisponibilidad from "./Pages/Admin/Disponibilidad/AdminDisponibilidad";
 
 // Páginas Cliente
 import InicioCliente from "./Pages/Cliente/inicio/inicio";
@@ -59,6 +61,7 @@ export default function App() {
         <Route path="AdminConfiguracion" element={<AdminConfiguracion />} />
         <Route path="AdminPQRS" element={<AdminPQRS />} />
         <Route path="AdminUsuarios" element={<AdminUsuarios />} />
+        <Route path="AdminDisponibilidad" element={<AdminDisponibilidad />} />
         {/* más módulos */}
         </Route>
       </Route>

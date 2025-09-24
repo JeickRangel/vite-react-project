@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminServicios.css";
 
 const AdminServicios = () => {
   // Lista de servicios simulada
-  const [servicios, setServicios] = useState([
-    { id: 1, nombre: "Corte de Cabello", descripcion: "Corte clásico", precio: 25000, duracion: 30 },
-    { id: 2, nombre: "Afeitado", descripcion: "Afeitado con navaja", precio: 15000, duracion: 20 },
-  ]);
+  const [servicios, setServicios] = useState([]);
+
+  const formatoCOP = new Intl.NumberFormat("es-CO", {
+  style: "currency",
+  currency: "COP",
+  minimumFractionDigits: 0, // evita decimales innecesarios
+});
+
 
   // Estado del modal
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -17,12 +21,20 @@ const AdminServicios = () => {
 
   // Estado del formulario
   const [formData, setFormData] = useState({
-    id: null,
+    id_servicio: null,
     nombre: "",
     descripcion: "",
     precio: "",
     duracion: "",
   });
+
+  // 🔹 1. Cargar servicios desde PHP
+  useEffect(() => {
+    fetch("http://localhost/barberia_app/php/servicios.php")
+      .then(res => res.json())
+      .then(data => setServicios(data))
+      .catch(err => console.error(err));
+  }, []);
 
   // Manejo de inputs
   const handleChange = (e) => {
@@ -31,9 +43,15 @@ const AdminServicios = () => {
 
   // Abrir modal para crear
   const abrirModalCrear = () => {
-    setFormData({ id: null, nombre: "", descripcion: "", precio: "", duracion: "" });
+    setFormData({ id_servicio: null, nombre: "", descripcion: "", precio: "", duracion: "" });
     setModalAbierto(true);
   };
+
+  const confirmarEliminar = (servicio) => {
+  setServicioAEliminar(servicio);
+  setModalEliminar(true);
+};
+
 
   // Abrir modal para editar
   const abrirModalEditar = (servicio) => {
@@ -41,29 +59,37 @@ const AdminServicios = () => {
     setModalAbierto(true);
   };
 
-  // Guardar servicio (crear o editar en memoria)
+  // 🔹 2. Guardar en la base de datos
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.id) {
-      // Editar
-      setServicios(servicios.map(s => (s.id === formData.id ? formData : s)));
-    } else {
-      // Crear
-      const nuevo = { ...formData, id: Date.now() };
-      setServicios([...servicios, nuevo]);
-    }
+    const method = formData.id_servicio ? "PUT" : "POST";
+
+    fetch("http://localhost/barberia_app/php/servicios.php", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(res => res.json())
+      .then(() => {
+        // Refrescar lista después de guardar
+        return fetch("http://localhost/barberia_app/php/servicios.php")
+          .then(res => res.json())
+          .then(data => setServicios(data));
+      });
     setModalAbierto(false);
   };
 
-  // Abrir modal de confirmación
-  const confirmarEliminar = (servicio) => {
-    setServicioAEliminar(servicio);
-    setModalEliminar(true);
-  };
-
-  // Ejecutar la eliminación
+  // 🔹 3. Eliminar servicio
   const eliminarServicio = () => {
-    setServicios(servicios.filter((s) => s.id !== servicioAEliminar.id));
+    fetch("http://localhost/barberia_app/php/servicios.php", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `id_servicio=${servicioAEliminar.id_servicio}`,
+    })
+      .then(res => res.json())
+      .then(() => {
+        setServicios(servicios.filter(s => s.id_servicio !== servicioAEliminar.id_servicio));
+      });
     setModalEliminar(false);
     setServicioAEliminar(null);
   };
@@ -90,10 +116,10 @@ const AdminServicios = () => {
         </thead>
         <tbody>
           {servicios.map((s) => (
-            <tr key={s.id}>
+            <tr key={s.id_servicio}>
               <td>{s.nombre}</td>
               <td>{s.descripcion}</td>
-              <td>${s.precio}</td>
+              <td>{formatoCOP.format(s.precio)}</td>
               <td>{s.duracion} min</td>
               <td>
                 <button className="btn-editar" onClick={() => abrirModalEditar(s)}>Editar</button>
@@ -108,7 +134,7 @@ const AdminServicios = () => {
       {modalAbierto && (
         <div className="admin-modal-overlay">
           <div className="admin-modal">
-            <h3>{formData.id ? "Editar Servicio" : "Crear Servicio"}</h3>
+            <h3>{formData.id_servicio ? "Editar Servicio" : "Crear Servicio"}</h3>
             <form className="admin-servicio-form" onSubmit={handleSubmit}>
               <div className="admin-form-group">
                 <label>Nombre del Servicio</label>

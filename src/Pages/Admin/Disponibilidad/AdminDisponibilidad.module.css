@@ -1,0 +1,215 @@
+/* Contenedor principal */
+.container {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+/* Título */
+.title {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Select de empleados */
+.select {
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.select:focus {
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(120, 155, 255, 0.25);
+}
+
+/* Botón agregar */
+.btnAgregar {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btnAgregar:hover { background: #218838; }
+.btnAgregar:active { transform: translateY(1px); }
+
+/* Tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid #eef2f7;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.table th {
+  background: #f5f7fb;
+  font-weight: 700;
+}
+
+.table tr:last-child td { border-bottom: none; }
+
+/* Botón eliminar */
+.btnEliminar {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btnEliminar:hover { background: #c82333; }
+.btnEliminar:active { transform: translateY(1px); }
+
+/* Overlay del modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Caja del modal */
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 24px 48px rgba(16, 24, 40, 0.25);
+  padding: 20px;
+}
+
+/* Título modal */
+.modalTitle {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Formulario */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Grupo de checkboxes (días) */
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px 14px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.checkboxGroup label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  user-select: none;
+  cursor: pointer;
+}
+
+.checkboxGroup input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Labels e inputs */
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #344054;
+}
+
+.input {
+  padding: 10px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(120, 155, 255, 0.25);
+}
+
+/* Botonera del modal */
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btnGuardar {
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.btnGuardar:hover { background: #0b5ed7; }
+.btnGuardar:active { transform: translateY(1px); }
+
+.btnCerrar {
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.btnCerrar:hover { background: #5a6268; }
+.btnCerrar:active { transform: translateY(1px); }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .modal { max-width: 92%; }
+  .checkboxGroup { grid-template-columns: repeat(2, 1fr); }
+}
