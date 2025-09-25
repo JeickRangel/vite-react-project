@@ -1,0 +1,197 @@
+/* 📌 Contenedor principal */
+.adminReservas {
+  padding: 20px;
+}
+
+.adminReservas h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* 📌 Botón crear */
+.crearBtn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 14px;
+  transition: background 0.2s ease-in-out;
+}
+
+.crearBtn:hover {
+  background-color: #1d4ed8;
+}
+
+/* 📌 Filtros */
+.filtros {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filtros input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.botonesFiltros button {
+  background-color: #f3f4f6;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 13px;
+  color:#333;
+}
+
+.botonesFiltros button:hover {
+  background-color: #e5e7eb;
+}
+
+/* 📌 Tabla */
+.tablaReservas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tablaReservas th,
+.tablaReservas td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.tablaReservas th {
+  background-color: #f9fafb;
+  font-weight: bold;
+}
+
+/* 📌 Estados */
+.estado {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.estadoPendiente {
+  background-color: #fef9c3;
+  color: #92400e;
+}
+
+.estadoConfirmada {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.estadoCancelada {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.estadoCompletada {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+/* 📌 Botones de acciones */
+.accionesBtn {
+  margin: 2px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.accionesBtn:hover {
+  opacity: 0.9;
+}
+
+.btnCancelar {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btnCompletar {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btnCambiar {
+  background-color: #facc15;
+  color: #78350f;
+}
+
+.btnDetalle {
+  background-color: #6b7280;
+  color: white;
+}
+
+/* 📌 Modal */
+.reservasModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContenido {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modalContenido h3 {
+  margin-bottom: 15px;
+}
+
+.formCrear select,
+.formCrear input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modalAcciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modalAcciones button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modalAcciones button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+.modalAcciones button[type="button"] {
+  background-color: #9ca3af;
+  color: white;
+}

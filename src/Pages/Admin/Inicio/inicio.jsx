@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./inicio.css";
 
 const Inicio = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="inicio-container">
       {/* Bienvenida */}
@@ -20,22 +23,22 @@ const Inicio = () => {
           <div className="card acceso">
             <h3>📅 Reservas</h3>
             <p>Gestiona y organiza las reservas de los clientes.</p>
-            <button>Ir a Citas</button>
+            <button onClick={() => navigate("/admin/reservas")}>Ir a Citas</button>
           </div>
           <div className="card acceso">
             <h3>💈 Servicios</h3>
             <p>Administra los servicios disponibles en la barbería.</p>
-            <button>Ir a Servicios</button>
+            <button onClick={() => navigate("/admin/servicios")}>Ir a Servicios</button>
           </div>
           <div className="card acceso">
             <h3>👤 Usuarios</h3>
             <p>Gestiona barberos, clientes y administradores.</p>
-            <button>Ir a Usuarios</button>
+            <button onClick={() => navigate("/admin/AdminUsuarios")}>Ir a Usuarios</button>
           </div>
           <div className="card acceso">
             <h3>📨 PQRS</h3>
             <p>Visualiza y responde peticiones, quejas o sugerencias.</p>
-            <button>Ir a PQRS</button>
+            <button onClick={() => navigate("/admin/AdminPQRS")}>Ir a PQRS</button>
           </div>
         </div>
       </section>

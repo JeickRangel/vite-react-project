@@ -59,11 +59,12 @@ export default function AdminDisponibilidad() {
     if (window.confirm("¿Seguro que deseas eliminar este horario?")) {
       fetch("http://localhost/barberia_app/php/disponibilidad.php", {
         method: "DELETE",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id_disponibilidad=${id}`,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_disponibilidad: id }),
       })
         .then(res => res.json())
-        .then(() => cargarDisponibilidad(idEmpleado));
+        .then(() => cargarDisponibilidad(idEmpleado))
+        .catch(err => console.error(err));
     }
   };
 
