@@ -60,6 +60,9 @@
 .reservar-caja button:hover {
   background: #000;
 }
+/* reservar.css */
+button[disabled] { opacity:.5; cursor:not-allowed; }
+
 
 /* Responsive */
 @media (max-width: 600px) {
