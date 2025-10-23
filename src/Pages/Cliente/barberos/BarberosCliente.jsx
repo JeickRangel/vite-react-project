@@ -1,41 +1,96 @@
-import React from "react";
+// src/components/BarberosCliente.jsx
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // si no usas router, puedes quitarlo
 import styles from "./BarberosCliente.module.css";
-// Si usas imágenes desde /assets, cámbialas por imports como hicimos antes
-import perfil1 from "../../../assets/Profile1.jpg";
-import perfil2 from "../../../assets/Profile2.jpg";
-import perfil3 from "../../../assets/Profile6.jpg";
-import perfil4 from "../../../assets/Profile3.jpg";
-import perfil5 from "../../../assets/Profile4.jpg";
-import perfil6 from "../../../assets/Profile5.jpeg";
 
-const BarberosCliente = () => {
-  // Aquí podrías luego traer los datos desde tu backend en lugar de array estático
-  const barberos = [
-    { id: 1, nombre: "Diana Pérez", especialidad: "Corte clásico", foto: perfil1 },
-    { id: 2, nombre: "Luis Ramírez", especialidad: "Barba y estilizado", foto: perfil2 },
-    { id: 3, nombre: "Ana Gómez", especialidad: "Cortes modernos", foto: perfil3 },
-    { id: 4, nombre: "Luis Manuel", especialidad: "Corte clásico", foto: perfil4 },
-    { id: 5, nombre: "Roberto Carlos", especialidad: "Barba y estilizado", foto: perfil5 },
-    { id: 6, nombre: "Andrés Díaz", especialidad: "Cortes modernos", foto: perfil6 },
-  ];
+// MISMA base que en tus otros módulos
+const API_BASE = "http://localhost/barberia_app/php";
+const ROL_BARBERO_ID = 2; // 👈 ajusta si el id del rol "Barbero" es otro
+
+const EP = {
+  usuarios: `${API_BASE}/usuarios.php`, // ?rol=2
+};
+
+// Utilidad: avatar con iniciales si no hay foto
+function InitialsAvatar({ name }) {
+  const initials = (name || "")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("");
+  return (
+    <div className={styles.avatarFallback} aria-label={name}>
+      {initials || "B"}
+    </div>
+  );
+}
+
+export default function BarberosCliente() {
+  const navigate = useNavigate();
+  const [barberos, setBarberos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    const cargar = async () => {
+      setLoading(true);
+      setMsg("");
+      try {
+        const res = await fetch(`${EP.usuarios}?rol=${ROL_BARBERO_ID}`);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Respuesta inesperada");
+
+        // Normaliza a { id, nombre, especialidad?, foto_url? }
+        const list = data.map((u) => ({
+          id: u.id,
+          nombre: u.nombre,
+          especialidad: u.especialidad || "Cortes y barbería",
+          foto_url: u.foto_url || null, // por si en el futuro agregas columna
+        }));
+        setBarberos(list);
+      } catch (e) {
+        setMsg("No se pudieron cargar los barberos.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargar();
+  }, []);
+
+  const verDisponibilidad = (barberoId) => {
+    // Llévalo a reservar con el barbero preseleccionado
+    navigate(`/Cliente/reservar?empleado_id=${barberoId}`);
+  };
 
   return (
     <main className={styles.barberosContenedor}>
       <h1>Nuestros Barberos</h1>
-      <div className={styles.gridBarberos}>
-        {barberos.map((barbero) => (
-          <div key={barbero.id} className={styles.barberoCard}>
-            <img src={barbero.foto} alt={barbero.nombre} />
-            <h3>{barbero.nombre}</h3>
-            <p className={styles.especialidad}>
-              Especialidad: {barbero.especialidad}
-            </p>
-            <button>Ver disponibilidad</button>
-          </div>
-        ))}
-      </div>
+
+      {msg && <p style={{ marginBottom: ".75rem" }}>{msg}</p>}
+
+      {loading ? (
+        <p>Cargando barberos…</p>
+      ) : barberos.length === 0 ? (
+        <p>No hay barberos activos por ahora.</p>
+      ) : (
+        <div className={styles.gridBarberos}>
+          {barberos.map((b) => (
+            <div key={b.id} className={styles.barberoCard}>
+              {/* Foto si existe, si no avatar con iniciales */}
+              {b.foto_url ? (
+                <img src={b.foto_url} alt={b.nombre} className={styles.barberoImg} />
+              ) : (
+                <InitialsAvatar name={b.nombre} />
+              )}
+
+              <h3>{b.nombre}</h3>
+              <p className={styles.especialidad}>Especialidad: {b.especialidad}</p>
+              <button onClick={() => verDisponibilidad(b.id)}>Ver disponibilidad</button>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
-};
-
-export default BarberosCliente;
+}

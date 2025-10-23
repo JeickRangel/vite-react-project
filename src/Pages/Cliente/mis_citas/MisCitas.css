@@ -66,6 +66,28 @@
   background: #000;
 }
 
+.mis-citas-contenedor { display:flex; justify-content:center; padding:1.5rem; }
+.mis-citas-caja { width:100%; max-width:900px; background:#fff; border-radius:12px; padding:1rem 1.25rem; box-shadow:0 10px 30px rgba(0,0,0,.06); }
+.mis-ayuda, .mis-msg { margin:.5rem 0 1rem; }
+.mis-filtros { display:flex; gap:.75rem; flex-wrap:wrap; align-items:flex-end; margin:.75rem 0 1rem; }
+.mis-filtros > div { display:flex; flex-direction:column; gap:.25rem; }
+.mis-filtros button { padding:.5rem .8rem; border-radius:.5rem; border:1px solid #e5e7eb; background:#111; color:#fff; cursor:pointer; }
+.mis-filtros .btn-secondary { background:#f3f4f6; color:#111; }
+.mis-lista { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.75rem; }
+.mis-item { display:flex; justify-content:space-between; gap:1rem; border:1px solid #eee; border-radius:.75rem; padding:.9rem; }
+.mis-item-title { display:flex; align-items:center; gap:.5rem; margin-bottom:.25rem; }
+.mis-servicio { font-weight:600; }
+.mis-badge { text-transform:capitalize; padding:.2rem .5rem; border-radius:.5rem; font-size:.8rem; border:1px solid transparent; }
+.mis-pendiente { background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+.mis-confirmada { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+.mis-cancelada { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+.mis-item-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:.25rem .75rem; }
+.mis-actions { display:flex; gap:.5rem; align-items:center; }
+.mis-actions button { padding:.45rem .7rem; border-radius:.5rem; border:1px solid #e5e7eb; background:#111; color:#fff; cursor:pointer; }
+.mis-actions .danger { background:#b91c1c; }
+.mis-vacio { padding:1rem; border:1px dashed #ddd; border-radius:.75rem; color:#666; }
+
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .mis-citas-contenedor {

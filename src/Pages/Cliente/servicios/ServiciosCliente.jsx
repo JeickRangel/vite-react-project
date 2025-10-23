@@ -1,31 +1,76 @@
-import React from "react";
+// src/components/ServiciosCliente.jsx
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // si no usas router, puedes quitarlo
 import styles from "./ServiciosCliente.module.css";
 
+// MISMA BASE que usas en reservar.jsx
+const API_BASE = "http://localhost/barberia_app/php";
+const EP = {
+  servicios: `${API_BASE}/servicios.php`,
+};
+
+function money(value) {
+  const num = Number(value ?? 0);
+  return num.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
+}
+
 const ServiciosCliente = () => {
-  // Lista de servicios (puedes modificarla o traerla desde backend luego)
-  const servicios = [
-    { id: 1, nombre: "Corte de Cabello", descripcion: "Corte básico y estilizado según tu preferencia.", precio: "$20.000" },
-    { id: 2, nombre: "Afeitado Clásico", descripcion: "Afeitado con toalla caliente y loción aftershave.", precio: "$15.000" },
-    { id: 3, nombre: "Corte + Barba", descripcion: "Combo de corte de cabello y arreglo de barba.", precio: "$30.000" },
-    { id: 4, nombre: "Tinte de Cabello", descripcion: "Coloración y tratamiento especial.", precio: "$40.000" },
-    { id: 5, nombre: "Corte de Cabello", descripcion: "Corte básico y estilizado según tu preferencia.", precio: "$20.000" },
-    { id: 6, nombre: "Afeitado Clásico", descripcion: "Afeitado con toalla caliente y loción aftershave.", precio: "$15.000" },
-    { id: 7, nombre: "Corte + Barba", descripcion: "Combo de corte de cabello y arreglo de barba.", precio: "$30.000" },
-    { id: 8, nombre: "Tinte de Cabello", descripcion: "Coloración y tratamiento especial.", precio: "$40.000" },
-  ];
+  const navigate = useNavigate();
+  const [servicios, setServicios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    const cargar = async () => {
+      setLoading(true);
+      setMsg("");
+      try {
+        const res = await fetch(EP.servicios);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Respuesta inesperada del servidor");
+        setServicios(data); // espera campos: id_servicio, nombre, descripcion, precio, duracion
+      } catch (e) {
+        setMsg("No se pudieron cargar los servicios.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargar();
+  }, []);
+
+  const irAReservar = (id_servicio) => {
+    // si quieres preseleccionar servicio en la pantalla de reserva:
+    navigate(`/Cliente/reservar?servicio_id=${id_servicio}`);
+  };
 
   return (
     <main className={styles.serviciosContenedor}>
       <h1>Servicios Disponibles</h1>
-      <div className={styles.gridServicios}>
-        {servicios.map((servicio) => (
-          <div key={servicio.id} className={styles.servicioCard}>
-            <h3>{servicio.nombre}</h3>
-            <p>{servicio.descripcion}</p>
-            <span className={styles.precio}>{servicio.precio}</span>
-          </div>
-        ))}
-      </div>
+
+      {msg && <p style={{ marginBottom: ".75rem" }}>{msg}</p>}
+      {loading ? (
+        <p>Cargando servicios…</p>
+      ) : servicios.length === 0 ? (
+        <p>No hay servicios disponibles por ahora.</p>
+      ) : (
+        <div className={styles.gridServicios}>
+          {servicios.map((s) => (
+            <div key={s.id_servicio} className={styles.servicioCard}>
+              <h3>{s.nombre}</h3>
+              {s.duracion ? <small style={{ color: "#666" }}>{s.duracion} min</small> : null}
+              <p>{s.descripcion}</p>
+              <span className={styles.precio}>{money(s.precio)}</span>
+
+              {/* Botón para reservar este servicio */}
+              <div style={{ marginTop: ".5rem" }}>
+                <button onClick={() => irAReservar(s.id_servicio)}>
+                  Reservar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 };
