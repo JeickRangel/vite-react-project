@@ -55,3 +55,20 @@
     font-size: 0.9rem;
     color: #aaa;
   }
+
+  .recientes-header { display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin-bottom:.5rem; }
+.recientes-acciones { display:flex; gap:.5rem; }
+.recientes-acciones .btn-secondary { background:#f3f4f6; color:#111; border:1px solid #e5e7eb; }
+.recientes-msg { margin:.5rem 0; }
+
+.citas-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:.75rem; }
+.cita-card { border:1px solid #eee; border-radius:.75rem; padding:.85rem; position:relative; background:#fff; }
+.cita-barbero { color:#555; margin:.25rem 0 .5rem; }
+.cita-meta { display:flex; gap:.5rem; color:#666; font-size:.95rem; margin-bottom:.35rem; }
+.cita-precio { font-weight:600; color:#111; }
+.cita-badge { position:absolute; top:.6rem; right:.6rem; font-size:.75rem; padding:.2rem .45rem; border-radius:.5rem; text-transform:capitalize; border:1px solid transparent; }
+.cita-pendiente { background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+.cita-confirmada { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+.cita-cancelada { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+
+.citas-vacio { border:1px dashed #ddd; border-radius:.75rem; padding:1rem; text-align:center; }

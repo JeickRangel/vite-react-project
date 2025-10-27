@@ -1,21 +1,33 @@
+// src/components/ClientesEmpleado.jsx
 import React, { useMemo, useState, useEffect } from "react";
 import styles from "./ClientesEmpleado.module.css";
 
-// Utils
-const limpiar = (s = "") => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+/* ================== CONFIG API ================== */
+const API_BASE = "http://localhost/barberia_app/php";
+const EP = {
+  usuarios: `${API_BASE}/usuarios.php`,
+  reservas: `${API_BASE}/reservas.php`,
+};
+const ROL_CLIENTE_ID = 3; // 👈 ajusta si tu rol "Cliente" tiene otro id
+
+/* ================== UTILS ================== */
+const limpiar = (s = "") =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const onlyDigits = (s = "") => s.replace(/\D/g, "");
 const waUrl = (tel) => `https://wa.me/${onlyDigits(tel)}`;
 const telUrl = (tel) => `tel:${onlyDigits(tel)}`;
 const fmtFecha = (iso) =>
-  new Date(iso).toLocaleString("es-CO", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  iso
+    ? new Date(iso).toLocaleString("es-CO", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "—";
 
-// Modal simple, accesible
+// Modal simple y accesible
 function Modal({ open, onClose, children, title = "Detalle" }) {
   useEffect(() => {
     if (!open) return;
@@ -38,44 +50,120 @@ function Modal({ open, onClose, children, title = "Detalle" }) {
   );
 }
 
-export default function ClientesEmpleado() {
-  // Datos mock
-  const [clientes] = useState([
-    { id: 1, nombre: "Luis Romero", telefono: "3001234567", email: "luis@example.com", ultimaVisitaISO: "2025-09-10T09:30:00", preferencias: "Degradado medio", notas: "Trae referencia" },
-    { id: 2, nombre: "Camilo Díaz", telefono: "3015558888", email: "camilo@example.com", ultimaVisitaISO: "2025-08-30T16:00:00", preferencias: "", notas: "" },
-    { id: 3, nombre: "Andrés Pérez", telefono: "3029991122", email: "", ultimaVisitaISO: "2025-09-01T11:00:00", preferencias: "Piel sensible", notas: "" },
-    { id: 4, nombre: "Juanita Rodríguez", telefono: "3047770000", email: "juani@example.com", ultimaVisitaISO: "2025-09-12T10:30:00", preferencias: "", notas: "Prefiere tijera" },
-    { id: 5, nombre: "Carlos Gómez", telefono: "3156667788", email: "", ultimaVisitaISO: "2025-07-25T15:00:00", preferencias: "Barba perfilada", notas: "" },
-    { id: 6, nombre: "Ana María", telefono: "3112223344", email: "ana@example.com", ultimaVisitaISO: "2025-06-15T10:00:00", preferencias: "", notas: "" },
-    { id: 7, nombre: "Pedro Páramo", telefono: "3000000000", email: "", ultimaVisitaISO: "2025-09-05T13:00:00", preferencias: "", notas: "" },
-  ]);
+export default function ClientesEmpleado({ currentEmployeeId: currentEmployeeIdProp }) {
+  /* ===== Sesión empleado: prop o localStorage ===== */
+  const empleadoId = useMemo(() => {
+    if (currentEmployeeIdProp) return currentEmployeeIdProp;
+    try {
+      const raw =
+        localStorage.getItem("user") ||
+        localStorage.getItem("usuario") ||
+        localStorage.getItem("authUser");
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      return obj?.id ?? obj?.user?.id ?? obj?.usuario?.id ?? null;
+    } catch {
+      return null;
+    }
+  }, [currentEmployeeIdProp]);
+
+  /* ===== Estado ===== */
+  const [clientes, setClientes] = useState([]);     // lista cruzada usuarios + última visita
+  const [historialAll, setHistorialAll] = useState([]); // reservas del empleado (para historiales y última visita)
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
 
   // Control lista
   const [busqueda, setBusqueda] = useState("");
   const [pagina, setPagina] = useState(1);
   const porPagina = 5;
 
-  // Modal/Detalle (solo front)
+  // Modal/Detalle
   const [abierto, setAbierto] = useState(false);
   const [detalle, setDetalle] = useState(null);
   const [notaNueva, setNotaNueva] = useState("");
 
-  // Historial simulado por cliente (en real, lo traerías por id)
-  const historialDemo = [
-    { id: 101, fechaISO: "2025-09-12T10:30:00", servicio: "Corte clásico", barbero: "Carlos", estado: "completada" },
-    { id: 102, fechaISO: "2025-08-30T16:00:00", servicio: "Afeitado", barbero: "Andrés", estado: "completada" },
-    { id: 103, fechaISO: "2025-07-25T15:00:00", servicio: "Corte + Cejas", barbero: "Carlos", estado: "cancelada" },
-  ];
+  /* ===== Carga de datos ===== */
+  useEffect(() => {
+    const cargar = async () => {
+      setLoading(true);
+      setMsg("");
+      try {
+        // 1) Usuarios (clientes)
+        const uRes = await fetch(`${EP.usuarios}?rol=${ROL_CLIENTE_ID}`);
+        const usuarios = await uRes.json();
+        if (!Array.isArray(usuarios)) throw new Error("usuarios.php no respondió con lista");
 
+        // 2) Reservas del empleado logueado (para última visita e historial)
+        let reservas = [];
+        if (empleadoId) {
+          const qs = new URLSearchParams({ empleado_id: empleadoId });
+          const rRes = await fetch(`${EP.reservas}?` + qs.toString());
+          reservas = await rRes.json();
+          if (!Array.isArray(reservas)) reservas = [];
+        }
+
+        // Mapa de última visita por cliente (match por id si existe en reservas, si no por nombre)
+        // NOTA: tu reservas.php actual no trae c.id -> si puedes, añade "c.id AS cliente_id" en el SELECT para evitar ambigüedades.
+        const normName = (s) => limpiar(s || "");
+        const lastByKey = new Map(); // key = cliente_id (preferente) o nombre normalizado
+
+        for (const r of reservas) {
+          const fechaStr = `${r.fecha}T${(r.hora || "00:00:00").slice(0, 8)}`;
+          const dt = new Date(fechaStr);
+          const key =
+            // usa id si te llega desde backend (recomendado)
+            (r.cliente_id != null ? `id:${r.cliente_id}` : `name:${normName(r.cliente)}`);
+
+          const prev = lastByKey.get(key);
+          if (!prev || dt > prev) lastByKey.set(key, dt);
+        }
+
+        // Armar lista de clientes enriquecida
+        const enriquecidos = usuarios.map((u) => {
+          const kById = `id:${u.id}`;
+          const kByName = `name:${normName(u.nombre)}`;
+          const last =
+            lastByKey.get(kById) ||
+            lastByKey.get(kByName) ||
+            null;
+
+          return {
+            id: u.id,
+            nombre: u.nombre,
+            telefono: u.telefono || "", // tu usuarios.php no trae telefono por defecto; quedará vacío.
+            email: u.correo || "",
+            preferencias: "",            // si en el futuro agregas campo, lo mapeas aquí
+            notas: "",                   // idem
+            ultimaVisitaISO: last ? last.toISOString() : null,
+          };
+        });
+
+        setClientes(enriquecidos);
+        setHistorialAll(reservas);
+      } catch (e) {
+        setMsg("No se pudo cargar la lista de clientes.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargar();
+  }, [empleadoId]);
+
+  /* ===== Filtros y paginación ===== */
   const filtrados = useMemo(() => {
     const q = limpiar(busqueda);
     return clientes
-      .filter(c =>
+      .filter((c) =>
         !q ||
         limpiar(c.nombre).includes(q) ||
         onlyDigits(c.telefono || "").includes(onlyDigits(busqueda))
       )
-      .sort((a, b) => new Date(b.ultimaVisitaISO) - new Date(a.ultimaVisitaISO));
+      .sort((a, b) => {
+        const da = a.ultimaVisitaISO ? new Date(a.ultimaVisitaISO) : 0;
+        const db = b.ultimaVisitaISO ? new Date(b.ultimaVisitaISO) : 0;
+        return db - da; // más reciente primero
+      });
   }, [clientes, busqueda]);
 
   const total = filtrados.length;
@@ -85,21 +173,68 @@ export default function ClientesEmpleado() {
 
   useEffect(() => { setPagina(1); }, [busqueda]);
 
+  /* ===== Modal Detalle ===== */
   const abrirDetalle = (c) => {
-    // clonamos para editar local sin tocar la lista
     setDetalle({ ...c });
     setNotaNueva("");
     setAbierto(true);
   };
 
-  const guardarDatosBasicos = () => {
-    alert("Datos actualizados (solo UI). Luego esto hará fetch al backend.");
+  // Historial real del cliente seleccionado (filtrado desde reservas ya cargadas)
+  const historialCliente = useMemo(() => {
+    if (!detalle) return [];
+    const nameKey = limpiar(detalle.nombre);
+    // Si tu reservas.php trae cliente_id, filtra por id en vez de nombre:
+    // return historialAll.filter(r => Number(r.cliente_id) === Number(detalle.id));
+    return historialAll
+      .filter((r) => limpiar(r.cliente) === nameKey)
+      .sort((a, b) => {
+        const da = new Date(`${a.fecha}T${(a.hora || "00:00:00").slice(0,8)}`);
+        const db = new Date(`${b.fecha}T${(b.hora || "00:00:00").slice(0,8)}`);
+        return db - da;
+      });
+  }, [detalle, historialAll]);
+
+  /* ===== Acciones (por ahora solo UI) ===== */
+    const guardarDatosBasicos = async () => {
+    if (!detalle) return;
+    try {
+      const payload = {
+        id: Number(detalle.id),
+        nombre: detalle.nombre,            // mantenemos lo que ya trae
+        correo: detalle.email || "",       // backend usa 'correo' como alias de email
+        telefono: detalle.telefono || "",  // 👈 nuevo
+        genero: null,
+        tipo_documento: null,
+        numero_documento: null,
+        rol: 3, // si tu cliente es rol 3; ajusta si es otro
+      };
+
+      const res = await fetch(`${EP.usuarios}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || data.status !== "OK") throw new Error(data.message || "Error guardando");
+
+      // Reflejar en la lista principal
+      setClientes((prev) =>
+        prev.map((c) => (c.id === detalle.id ? { ...c, telefono: detalle.telefono, email: detalle.email } : c))
+      );
+
+      alert("✅ Datos guardados");
+    } catch (e) {
+      alert("❌ No se pudo guardar el teléfono/email");
+      console.error(e);
+    }
   };
+
 
   const agregarNota = () => {
     if (!notaNueva.trim()) return;
     const nueva = `${new Date().toLocaleString("es-CO")}: ${notaNueva}`;
-    setDetalle(prev => ({ ...prev, notas: (prev.notas ? prev.notas + "\n" : "") + nueva }));
+    setDetalle((prev) => ({ ...prev, notas: (prev.notas ? prev.notas + "\n" : "") + nueva }));
     setNotaNueva("");
   };
 
@@ -107,7 +242,7 @@ export default function ClientesEmpleado() {
     <section className={styles.wrap}>
       <header className={styles.header}>
         <h2>Clientes</h2>
-        <p>{total} resultado(s)</p>
+        <p>{loading ? "Cargando…" : `${total} resultado(s)`} {msg && <span className={styles.flashMsg}>— {msg}</span>}</p>
       </header>
 
       <div className={styles.toolbar}>
@@ -132,67 +267,75 @@ export default function ClientesEmpleado() {
             </tr>
           </thead>
           <tbody>
-            {paginaActual.length === 0 ? (
+            {loading ? (
+              <tr><td colSpan="5" className={styles.vacio}>Cargando…</td></tr>
+            ) : paginaActual.length === 0 ? (
               <tr>
                 <td colSpan="5" className={styles.vacio}>No hay clientes para los filtros.</td>
               </tr>
-            ) : paginaActual.map((c) => (
-              <tr key={c.id}>
-                <td>
-                  <div className={styles.clienteCell}>
-                    <div className={styles.avatar}>{(c.nombre || "?").charAt(0)}</div>
-                    <div>
-                      <div className={styles.nombre}>{c.nombre}</div>
-                      {c.preferencias && <div className={styles.mini}>{c.preferencias}</div>}
+            ) : (
+              paginaActual.map((c) => (
+                <tr key={c.id}>
+                  <td>
+                    <div className={styles.clienteCell}>
+                      <div className={styles.avatar}>{(c.nombre || "?").charAt(0)}</div>
+                      <div>
+                        <div className={styles.nombre}>{c.nombre}</div>
+                        {c.preferencias && <div className={styles.mini}>{c.preferencias}</div>}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className={styles.mono}>{c.telefono || "—"}</td>
-                <td className={styles.mono}>{c.email || "—"}</td>
-                <td>{c.ultimaVisitaISO ? fmtFecha(c.ultimaVisitaISO) : "—"}</td>
-                <td className={styles.acciones}>
-                  <a className={`${styles.btn} ${styles.btnSec}`} href={telUrl(c.telefono)}>Llamar</a>
-                  <a className={`${styles.btn} ${styles.btnSec}`} href={waUrl(c.telefono)} target="_blank" rel="noreferrer">WhatsApp</a>
-                  <button className={`${styles.btn} ${styles.btnPrim}`} onClick={() => abrirDetalle(c)}>Ver</button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className={styles.mono}>{c.telefono || "—"}</td>
+                  <td className={styles.mono}>{c.email || "—"}</td>
+                  <td>{fmtFecha(c.ultimaVisitaISO)}</td>
+                  <td className={styles.acciones}>
+                    <a className={`${styles.btn} ${styles.btnSec}`} href={telUrl(c.telefono)}>Llamar</a>
+                    <a className={`${styles.btn} ${styles.btnSec}`} href={waUrl(c.telefono)} target="_blank" rel="noreferrer">WhatsApp</a>
+                    <button className={`${styles.btn} ${styles.btnPrim}`} onClick={() => abrirDetalle(c)}>Ver</button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
       {/* Paginación */}
       <div className={styles.paginacion}>
-        <button className={styles.pagBtn} disabled={pagina <= 1} onClick={() => setPagina(p => Math.max(1, p - 1))}>Anterior</button>
+        <button className={styles.pagBtn} disabled={pagina <= 1} onClick={() => setPagina((p) => Math.max(1, p - 1))}>Anterior</button>
         <span className={styles.pagInfo}>Página {pagina} de {totalPag}</span>
-        <button className={styles.pagBtn} disabled={pagina >= totalPag} onClick={() => setPagina(p => Math.min(totalPag, p + 1))}>Siguiente</button>
+        <button className={styles.pagBtn} disabled={pagina >= totalPag} onClick={() => setPagina((p) => Math.min(totalPag, p + 1))}>Siguiente</button>
       </div>
 
       {/* Cards (móvil) */}
       <div className={styles.cards}>
-        {paginaActual.length === 0 ? (
+        {loading ? (
+          <div className={styles.cardVacio}>Cargando…</div>
+        ) : paginaActual.length === 0 ? (
           <div className={styles.cardVacio}>No hay clientes para los filtros.</div>
-        ) : paginaActual.map(c => (
-          <article key={c.id} className={styles.card}>
-            <header className={styles.cardHeader}>
-              <div className={styles.avatarLg}>{(c.nombre || "?").charAt(0)}</div>
-              <div className={styles.cardTitle}>
-                <h4 className={styles.nombre}>{c.nombre}</h4>
-                {c.preferencias && <div className={styles.mini}>{c.preferencias}</div>}
+        ) : (
+          paginaActual.map((c) => (
+            <article key={c.id} className={styles.card}>
+              <header className={styles.cardHeader}>
+                <div className={styles.avatarLg}>{(c.nombre || "?").charAt(0)}</div>
+                <div className={styles.cardTitle}>
+                  <h4 className={styles.nombre}>{c.nombre}</h4>
+                  {c.preferencias && <div className={styles.mini}>{c.preferencias}</div>}
+                </div>
+              </header>
+              <div className={styles.cardBody}>
+                <p><strong>Teléfono:</strong> <span className={styles.mono}>{c.telefono || "—"}</span></p>
+                <p><strong>Email:</strong> <span className={styles.mono}>{c.email || "—"}</span></p>
+                <p><strong>Última visita:</strong> {fmtFecha(c.ultimaVisitaISO)}</p>
               </div>
-            </header>
-            <div className={styles.cardBody}>
-              <p><strong>Teléfono:</strong> <span className={styles.mono}>{c.telefono || "—"}</span></p>
-              <p><strong>Email:</strong> <span className={styles.mono}>{c.email || "—"}</span></p>
-              <p><strong>Última visita:</strong> {c.ultimaVisitaISO ? fmtFecha(c.ultimaVisitaISO) : "—"}</p>
-            </div>
-            <footer className={styles.cardFooter}>
-              <a className={`${styles.btn} ${styles.btnSec}`} href={telUrl(c.telefono)}>Llamar</a>
-              <a className={`${styles.btn} ${styles.btnSec}`} href={waUrl(c.telefono)} target="_blank" rel="noreferrer">WhatsApp</a>
-              <button className={`${styles.btn} ${styles.btnPrim}`} onClick={() => abrirDetalle(c)}>Ver</button>
-            </footer>
-          </article>
-        ))}
+              <footer className={styles.cardFooter}>
+                <a className={`${styles.btn} ${styles.btnSec}`} href={telUrl(c.telefono)}>Llamar</a>
+                <a className={`${styles.btn} ${styles.btnSec}`} href={waUrl(c.telefono)} target="_blank" rel="noreferrer">WhatsApp</a>
+                <button className={`${styles.btn} ${styles.btnPrim}`} onClick={() => abrirDetalle(c)}>Ver</button>
+              </footer>
+            </article>
+          ))
+        )}
       </div>
 
       {/* Modal de detalle */}
@@ -223,6 +366,7 @@ export default function ClientesEmpleado() {
                   <a className={`${styles.btn} ${styles.btnSec}`} href={waUrl(detalle.telefono)} target="_blank" rel="noreferrer">WhatsApp</a>
                   <button className={`${styles.btn} ${styles.btnPrim}`} onClick={guardarDatosBasicos}>Guardar</button>
                 </div>
+
               </div>
 
               <div className={styles.panel}>
@@ -242,32 +386,38 @@ export default function ClientesEmpleado() {
                   />
                   <button className={`${styles.btn} ${styles.btnPrim}`} onClick={agregarNota}>Agregar</button>
                 </div>
+                <p className={styles.hint}>
+                  (Si quieres guardar notas por cliente, creamos una tabla <code>cliente_notas</code> o un campo en <code>usuarios</code>.)
+                </p>
               </div>
             </div>
 
             <div className={styles.panel}>
-              <h5>Historial (demo)</h5>
+              <h5>Historial</h5>
               <div className={styles.tableWrap}>
                 <table className={styles.tablaHist}>
                   <thead>
                     <tr>
                       <th>Fecha</th>
                       <th>Servicio</th>
-                      <th>Barbero</th>
                       <th>Estado</th>
+                      <th>Precio</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {historialDemo.length === 0 ? (
+                    {historialCliente.length === 0 ? (
                       <tr><td colSpan="4" className={styles.vacio}>Sin registros</td></tr>
-                    ) : historialDemo.map(h => (
-                      <tr key={h.id}>
-                        <td>{fmtFecha(h.fechaISO)}</td>
-                        <td>{h.servicio}</td>
-                        <td>{h.barbero}</td>
-                        <td><span className={`${styles.badge} ${styles[`estado_${h.estado}`]}`}>{h.estado}</span></td>
-                      </tr>
-                    ))}
+                    ) : historialCliente.map((h, i) => {
+                      const iso = `${h.fecha}T${(h.hora || "00:00:00").slice(0,8)}`;
+                      return (
+                        <tr key={`${h.id_reserva || i}-${iso}`}>
+                          <td>{fmtFecha(iso)}</td>
+                          <td>{h.servicio}</td>
+                          <td><span className={`${styles.badge} ${styles[`estado_${h.estado}`]}`}>{h.estado}</span></td>
+                          <td className={styles.mono}>{h.precio ? `$${Number(h.precio).toLocaleString()}` : "—"}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

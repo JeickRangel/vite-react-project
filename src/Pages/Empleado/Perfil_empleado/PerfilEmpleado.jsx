@@ -1,81 +1,158 @@
-import React, { useState } from "react";
+// src/components/PerfilEmpleado.jsx
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./PerfilEmpleado.module.css";
 
-export default function PerfilEmpleado() {
-  const [empleado, setEmpleado] = useState({
-    nombre: "Juan Pérez",
-    correo: "juan.perez@empresa.com",
-    documento: "CC 123456789",
-    rol: "Barbero",
-    telefono: "3124567890",
-    direccion: "Calle 123 #45-67",
-    foto: "https://via.placeholder.com/300", // puede fallar sin problema
-  });
+/* ====== CONFIG API ====== */
+const API_BASE = "http://localhost/barberia_app/php";
+const EP = {
+  usuarios: `${API_BASE}/usuarios.php`,
+  upload:   `${API_BASE}/upload_foto.php`,
+};
 
-  const [editando, setEditando] = useState(false);
-  const [formData, setFormData] = useState(empleado);
-
-  // Avatar de respaldo (SVG embebido)
-  const FALLBACK_AVATAR =
-    "data:image/svg+xml;utf8,\
+/* ====== FALLBACK AVATAR (SVG) ====== */
+const FALLBACK_AVATAR =
+  "data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>\
 <rect width='100%' height='100%' rx='80' fill='%231976d2'/>\
 <text x='50%' y='54%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='64' fill='white'>👤</text>\
 </svg>";
 
+export default function PerfilEmpleado({ currentEmployeeId: currentEmployeeIdProp }) {
+  /* ===== Sesión empleado: prop o localStorage ===== */
+  const empleadoId = useMemo(() => {
+    if (currentEmployeeIdProp) return currentEmployeeIdProp;
+    try {
+      const raw =
+        localStorage.getItem("user") ||
+        localStorage.getItem("usuario") ||
+        localStorage.getItem("authUser");
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      return obj?.id ?? obj?.user?.id ?? obj?.usuario?.id ?? null;
+    } catch {
+      return null;
+    }
+  }, [currentEmployeeIdProp]);
+
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
+
+  const [empleado, setEmpleado] = useState(null);
+  const [editando, setEditando] = useState(false);
+  const [formData, setFormData] = useState(null); // {nombre, correo(RO), telefono, foto_url}
+
+  // Cargar datos del empleado
+  useEffect(() => {
+    const cargar = async () => {
+      if (!empleadoId) { setLoading(false); setMsg("No hay sesión de empleado"); return; }
+      setLoading(true); setMsg("");
+      try {
+        const res = await fetch(`${EP.usuarios}?id=${empleadoId}`);
+        const data = await res.json();
+        if (!data) throw new Error("Empleado no encontrado");
+
+        const perfil = {
+          id: data.id,
+          nombre: data.nombre,
+          correo: data.correo,           // solo mostrar
+          telefono: data.telefono || "",
+          foto_url: data.foto_url || "",
+          rol: data.rol_nombre || "",
+          documento: data.numero_documento || "",
+        };
+        setEmpleado(perfil);
+        setFormData(perfil);
+      } catch (e) {
+        setMsg("No se pudo cargar el perfil");
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargar();
+  }, [empleadoId]);
+
   const onImgError = (e) => {
-    if (e.currentTarget.src !== FALLBACK_AVATAR) {
-      e.currentTarget.src = FALLBACK_AVATAR;
+    if (e.currentTarget.src !== FALLBACK_AVATAR) e.currentTarget.src = FALLBACK_AVATAR;
+  };
+
+  const onChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+  // Subir archivo y guardar foto_url
+  const onFotoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const fd = new FormData();
+      fd.append("foto", file);
+      const res = await fetch(EP.upload, { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok || data.status !== "OK") throw new Error(data.message || "Error al subir foto");
+      setFormData((p) => ({ ...p, foto_url: data.url }));
+    } catch (err) {
+      alert("❌ No se pudo subir la foto");
     }
   };
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const guardar = async () => {
+    if (!formData) return;
+    try {
+      // NO enviamos correo (solo lectura)
+      const payload = {
+        id: Number(formData.id),
+        nombre: formData.nombre,
+        telefono: formData.telefono,
+        foto_url: formData.foto_url || null,
+        genero: null,
+        tipo_documento: null,
+        numero_documento: formData.documento || null,
+        rol: null, // opcional, si no deseas cambiar rol
+      };
+      const res = await fetch(EP.usuarios, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || data.status !== "OK") throw new Error(data.message || "Error al guardar");
 
-  const handleFotoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => setFormData({ ...formData, foto: reader.result });
-    reader.readAsDataURL(file);
+      setEmpleado(formData);
+      setEditando(false);
+      setMsg("✅ Perfil actualizado");
+    } catch (e) {
+      setMsg("❌ No se pudo guardar el perfil");
+    }
   };
 
-  const handleGuardar = () => {
-    setEmpleado(formData);
-    setEditando(false);
-  };
+  if (loading) return <div className={styles.peContainer}>Cargando…</div>;
+
+  if (!empleado) return <div className={styles.peContainer}>{msg || "Perfil no disponible"}</div>;
 
   return (
     <div className={styles.peContainer}>
-      {/* TÍTULO: icono + texto (alineado con flex) */}
       <div className={styles.peTitleRow}>
         <span className={styles.peTitleIcon} aria-hidden="true">👤</span>
         <h2 className={styles.peTitleText}>Perfil del Empleado</h2>
       </div>
 
+      {msg && <p className={styles.peFlash}>{msg}</p>}
+
       {!editando ? (
         <section className={styles.peCard}>
           <div className={styles.peLayout}>
             <img
-              src={empleado.foto}
+              src={empleado.foto_url || FALLBACK_AVATAR}
               alt="Foto de perfil"
               className={styles.peAvatar}
               onError={onImgError}
             />
-
             <div className={styles.peInfo}>
               <p><span className={styles.peKey}>Nombre:</span> {empleado.nombre}</p>
               <p><span className={styles.peKey}>Correo:</span> {empleado.correo}</p>
-              <p><span className={styles.peKey}>Documento:</span> {empleado.documento}</p>
-              <p><span className={styles.peKey}>Rol:</span> {empleado.rol}</p>
-              <p><span className={styles.peKey}>Teléfono:</span> {empleado.telefono}</p>
-              <p><span className={styles.peKey}>Dirección:</span> {empleado.direccion}</p>
+              <p><span className={styles.peKey}>Documento:</span> {empleado.documento || "—"}</p>
+              <p><span className={styles.peKey}>Rol:</span> {empleado.rol || "—"}</p>
+              <p><span className={styles.peKey}>Teléfono:</span> {empleado.telefono || "—"}</p>
 
-              <button
-                type="button"
-                className={styles.peBtnPrimary}
-                onClick={() => setEditando(true)}
-              >
+              <button type="button" className={styles.peBtnPrimary} onClick={() => setEditando(true)}>
                 ✏️ Editar Perfil
               </button>
             </div>
@@ -87,7 +164,7 @@ export default function PerfilEmpleado() {
 
           <div className={styles.peFotoBox}>
             <img
-              src={formData.foto}
+              src={formData.foto_url || FALLBACK_AVATAR}
               alt="Foto de perfil"
               className={styles.peAvatar}
               onError={onImgError}
@@ -95,7 +172,7 @@ export default function PerfilEmpleado() {
             <input
               type="file"
               accept="image/*"
-              onChange={handleFotoChange}
+              onChange={onFotoChange}
               className={styles.peInputFile}
             />
           </div>
@@ -107,7 +184,7 @@ export default function PerfilEmpleado() {
               type="text"
               name="nombre"
               value={formData.nombre}
-              onChange={handleChange}
+              onChange={onChange}
             />
           </div>
 
@@ -118,7 +195,8 @@ export default function PerfilEmpleado() {
               type="email"
               name="correo"
               value={formData.correo}
-              onChange={handleChange}
+              disabled   // 👈 Solo lectura
+              readOnly
             />
           </div>
 
@@ -128,33 +206,16 @@ export default function PerfilEmpleado() {
               className={styles.peInput}
               type="text"
               name="telefono"
-              value={formData.telefono}
-              onChange={handleChange}
+              value={formData.telefono || ""}
+              onChange={onChange}
             />
           </div>
 
-          <div className={styles.peField}>
-            <label className={styles.peLabel}>Dirección</label>
-            <input
-              className={styles.peInput}
-              type="text"
-              name="direccion"
-              value={formData.direccion}
-              onChange={handleChange}
-            />
-          </div>
+          {/* Sin campo Dirección, lo ignoramos */}
 
           <div className={styles.peActions}>
-            <button type="button" className={styles.peBtnSuccess} onClick={handleGuardar}>
-              💾 Guardar
-            </button>
-            <button
-              type="button"
-              className={styles.peBtnDanger}
-              onClick={() => setEditando(false)}
-            >
-              ❌ Cancelar
-            </button>
+            <button type="button" className={styles.peBtnSuccess} onClick={guardar}>💾 Guardar</button>
+            <button type="button" className={styles.peBtnDanger} onClick={() => setEditando(false)}>❌ Cancelar</button>
           </div>
         </section>
       )}

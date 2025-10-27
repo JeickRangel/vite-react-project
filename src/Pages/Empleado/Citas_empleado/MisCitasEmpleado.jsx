@@ -1,7 +1,12 @@
-import React, { useMemo, useState } from "react";
+// src/components/MisCitasEmpleado.jsx
+import { useEffect, useMemo, useState } from "react";
 import styles from "./MisCitasEmpleado.module.css";
 
-/* Utilidad: formatear fecha en español de Colombia */
+/* ===== Config API ===== */
+const API_BASE = "http://localhost/barberia_app/php";
+const EP = { reservas: `${API_BASE}/reservas.php` };
+
+/* Utilidad: formatear fecha en es-CO */
 function formatearFecha(iso) {
   const d = new Date(iso);
   return d.toLocaleString("es-CO", {
@@ -14,15 +19,13 @@ function formatearFecha(iso) {
   });
 }
 
-/* Clase visual para el estado */
+/* Clase visual para el estado (solo los que existen en backend) */
 function badgeClass(estado, styles) {
   switch (estado) {
     case "pendiente":
       return `${styles.badge} ${styles.badgePendiente}`;
     case "confirmada":
       return `${styles.badge} ${styles.badgeConfirmada}`;
-    case "completada":
-      return `${styles.badge} ${styles.badgeCompletada}`;
     case "cancelada":
       return `${styles.badge} ${styles.badgeCancelada}`;
     default:
@@ -30,94 +33,82 @@ function badgeClass(estado, styles) {
   }
 }
 
-export default function MisCitasEmpleado() {
-  /* Datos de ejemplo (luego los reemplazas por fetch a tu PHP) */
-  const [citas, setCitas] = useState([
-    {
-      id: 1,
-      clienteNombre: "Luis Romero",
-      telefono: "3001234567",
-      servicio: "Corte + Barba",
-      fechaISO: "2025-09-17T09:30:00",
-      duracionMin: 60,
-      estado: "confirmada",
-      notas: "Prefiere degradado medio",
-    },
-    {
-      id: 2,
-      clienteNombre: "Camilo Díaz",
-      telefono: "3015558888",
-      servicio: "Corte clásico",
-      fechaISO: "2025-09-16T16:00:00",
-      duracionMin: 40,
-      estado: "pendiente",
-      notas: "",
-    },
-    {
-      id: 3,
-      clienteNombre: "Andrés Pérez",
-      telefono: "3029991122",
-      servicio: "Afeitado",
-      fechaISO: "2025-09-20T11:00:00",
-      duracionMin: 30,
-      estado: "pendiente",
-      notas: "Piel sensible",
-    },
-    {
-      id: 4,
-      clienteNombre: "Juanita R.",
-      telefono: "3047770000",
-      servicio: "Perfilado de barba",
-      fechaISO: "2025-09-15T10:30:00",
-      duracionMin: 30,
-      estado: "completada",
-      notas: "",
-    },
-    {
-      id: 5,
-      clienteNombre: "Carlos G.",
-      telefono: "3156667788",
-      servicio: "Corte + Cejas",
-      fechaISO: "2025-09-18T15:00:00",
-      duracionMin: 50,
-      estado: "cancelada",
-      notas: "Reagendó para la otra semana",
-    },
-  ]);
+export default function MisCitasEmpleado({ currentEmployeeId: currentEmployeeIdProp }) {
+  /* ===== Sesión empleado: prop o localStorage ===== */
+  const empleadoId = useMemo(() => {
+    if (currentEmployeeIdProp) return currentEmployeeIdProp;
+    try {
+      const raw =
+        localStorage.getItem("user") ||
+        localStorage.getItem("usuario") ||
+        localStorage.getItem("authUser");
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      return obj?.id ?? obj?.user?.id ?? obj?.usuario?.id ?? null;
+    } catch {
+      return null;
+    }
+  }, [currentEmployeeIdProp]);
+
+  /* ===== Estado ===== */
+  const [citas, setCitas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
 
   /* Controles de filtro */
   const [busqueda, setBusqueda] = useState("");
-  const [filtroEstado, setFiltroEstado] = useState("todas"); // todas | pendiente | confirmada | completada | cancelada
+  const [filtroEstado, setFiltroEstado] = useState("todas"); // todas | pendiente | confirmada | cancelada
   const [filtroRango, setFiltroRango] = useState("proximas"); // hoy | proximas | todas
 
-  /* Filtrado + orden */
+  /* ===== Cargar citas del empleado ===== */
+  const cargar = async () => {
+    if (!empleadoId) {
+      setLoading(false);
+      setMsg("No hay sesión de empleado.");
+      return;
+    }
+    setLoading(true);
+    setMsg("");
+    try {
+      const qs = new URLSearchParams({ empleado_id: empleadoId });
+      const res = await fetch(`${EP.reservas}?` + qs.toString());
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("Respuesta inesperada");
+
+      const normalizadas = data.map((r) => ({
+        id: Number(r.id_reserva),
+        clienteNombre: r.cliente,
+        telefono: r.telefono || "",
+        servicio: r.servicio,
+        fechaISO: `${r.fecha}T${(r.hora || "00:00:00").slice(0, 8)}`,
+        duracionMin: r.duracion ?? null,
+        estado: r.estado,          // pendiente | confirmada | cancelada
+        precio: r.precio ?? null,
+      }));
+
+      setCitas(normalizadas);
+    } catch (e) {
+      setMsg("No se pudieron cargar tus citas.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    cargar(); // eslint-disable-next-line
+  }, [empleadoId]);
+
+  /* ===== Filtro y orden ===== */
   const citasFiltradas = useMemo(() => {
     const ahora = new Date();
-    const hoyIni = new Date(
-      ahora.getFullYear(),
-      ahora.getMonth(),
-      ahora.getDate(),
-      0,
-      0,
-      0
-    );
-    const hoyFin = new Date(
-      ahora.getFullYear(),
-      ahora.getMonth(),
-      ahora.getDate(),
-      23,
-      59,
-      59
-    );
+    const hoyIni = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), 0, 0, 0);
+    const hoyFin = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), 23, 59, 59);
     const dosSemanas = new Date(ahora);
     dosSemanas.setDate(ahora.getDate() + 14);
 
     return citas
       .filter((c) => {
-        if (
-          busqueda.trim() &&
-          !c.clienteNombre.toLowerCase().includes(busqueda.toLowerCase())
-        ) {
+        if (busqueda.trim() && !c.clienteNombre?.toLowerCase().includes(busqueda.toLowerCase())) {
           return false;
         }
         if (filtroEstado !== "todas" && c.estado !== filtroEstado) {
@@ -134,27 +125,44 @@ export default function MisCitasEmpleado() {
       .sort((a, b) => new Date(a.fechaISO) - new Date(b.fechaISO));
   }, [citas, busqueda, filtroEstado, filtroRango]);
 
-  /* Acciones locales (UI optimista, sin backend por ahora) */
-  const marcarCompletada = (id) => {
-    setCitas((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, estado: "completada" } : c))
-    );
+  /* ===== Acciones (PUT backend) ===== */
+  const actualizarEstado = async (id, nuevoEstado) => {
+    try {
+      const res = await fetch(EP.reservas, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_reserva: id, estado: nuevoEstado }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.status !== "OK") throw new Error(data.message || "Error");
+      setCitas((prev) => prev.map((c) => (c.id === id ? { ...c, estado: nuevoEstado } : c)));
+      setMsg(`✅ Estado actualizado a "${nuevoEstado}"`);
+    } catch (e) {
+      setMsg("❌ No se pudo actualizar el estado");
+    }
   };
+
+  const confirmarCita = (id) => actualizarEstado(id, "confirmada");
+
+  // “Marcar atendida” usa confirmada (backend no tiene 'completada')
+  const marcarCompletada = (id) => actualizarEstado(id, "confirmada");
 
   const cancelarCita = (id) => {
     if (!window.confirm("¿Seguro que deseas cancelar esta cita?")) return;
-    setCitas((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, estado: "cancelada" } : c))
-    );
+    actualizarEstado(id, "cancelada");
   };
 
   return (
     <section className={styles.wrapper}>
       <header className={styles.header}>
         <h2>Mis Citas</h2>
-        <p>{citasFiltradas.length} cita(s) encontrada(s)</p>
+        <p>
+          {loading ? "Cargando…" : `${citasFiltradas.length} cita(s) encontrada(s)`}
+          {msg && <span className={styles.flashMsg}> — {msg}</span>}
+        </p>
       </header>
 
+      {/* Toolbar filtros */}
       <div className={styles.toolbar}>
         <input
           className={styles.input}
@@ -173,7 +181,6 @@ export default function MisCitasEmpleado() {
           <option value="todas">Estado: todas</option>
           <option value="pendiente">Pendiente</option>
           <option value="confirmada">Confirmada</option>
-          <option value="completada">Completada</option>
           <option value="cancelada">Cancelada</option>
         </select>
 
@@ -187,9 +194,13 @@ export default function MisCitasEmpleado() {
           <option value="hoy">Solo hoy</option>
           <option value="todas">Todas</option>
         </select>
+
+        <button className={styles.btnFantasma} onClick={cargar}>
+          Recargar
+        </button>
       </div>
 
-      {/* Vista TABLA (escritorio) */}
+      {/* TABLA (escritorio) */}
       <div className={styles.tablaWrapper}>
         <table className={styles.tabla}>
           <thead>
@@ -203,7 +214,11 @@ export default function MisCitasEmpleado() {
             </tr>
           </thead>
           <tbody>
-            {citasFiltradas.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan="6" className={styles.vacio}>Cargando…</td>
+              </tr>
+            ) : citasFiltradas.length === 0 ? (
               <tr>
                 <td colSpan="6" className={styles.vacio}>
                   No hay citas para los filtros seleccionados.
@@ -216,29 +231,38 @@ export default function MisCitasEmpleado() {
                   <td>
                     <div className={styles.cliente}>
                       <strong>{c.clienteNombre}</strong>
-                      <span className={styles.telefono}>{c.telefono}</span>
+                      {c.telefono ? <span className={styles.telefono}>{c.telefono}</span> : null}
                     </div>
                   </td>
                   <td>{c.servicio}</td>
-                  <td>{c.duracionMin} min</td>
+                  <td>{c.duracionMin ? `${c.duracionMin} min` : "—"}</td>
                   <td>
-                    <span className={badgeClass(c.estado, styles)}>
-                      {c.estado}
-                    </span>
+                    <span className={badgeClass(c.estado, styles)}>{c.estado}</span>
                   </td>
                   <td className={styles.acciones}>
-                    {c.estado !== "completada" && c.estado !== "cancelada" && (
+                    {c.estado === "pendiente" && (
+                      <button
+                        className={`${styles.btn} ${styles.btnSecundario}`}
+                        onClick={() => confirmarCita(c.id)}
+                      >
+                        Confirmar
+                      </button>
+                    )}
+                    {c.estado !== "cancelada" && (
                       <button
                         className={`${styles.btn} ${styles.btnPrimario}`}
                         onClick={() => marcarCompletada(c.id)}
+                        disabled={c.estado === "confirmada"}
+                        title={c.estado === "confirmada" ? "Ya está confirmada" : "Marcar atendida"}
                       >
                         Marcar atendida
                       </button>
                     )}
-                    {c.estado !== "cancelada" && c.estado !== "completada" && (
+                    {c.estado !== "cancelada" && (
                       <button
                         className={`${styles.btn} ${styles.btnPeligro}`}
                         onClick={() => cancelarCita(c.id)}
+                        disabled={c.estado === "confirmada" && false /* deja cancelar si quieres */}
                       >
                         Cancelar
                       </button>
@@ -257,9 +281,11 @@ export default function MisCitasEmpleado() {
         </table>
       </div>
 
-      {/* Vista TARJETAS (móvil) */}
+      {/* TARJETAS (móvil) */}
       <div className={styles.cards}>
-        {citasFiltradas.length === 0 ? (
+        {loading ? (
+          <div className={styles.cardVacio}>Cargando…</div>
+        ) : citasFiltradas.length === 0 ? (
           <div className={styles.cardVacio}>
             No hay citas para los filtros seleccionados.
           </div>
@@ -273,30 +299,31 @@ export default function MisCitasEmpleado() {
               <div className={styles.cardBody}>
                 <p>
                   <strong>Cliente:</strong> {c.clienteNombre}{" "}
-                  <span className={styles.telefono}>({c.telefono})</span>
+                  {c.telefono ? <span className={styles.telefono}>({c.telefono})</span> : null}
                 </p>
-                <p>
-                  <strong>Servicio:</strong> {c.servicio}
-                </p>
-                <p>
-                  <strong>Duración:</strong> {c.duracionMin} min
-                </p>
-                {c.notas && (
-                  <p className={styles.notas}>
-                    <strong>Notas:</strong> {c.notas}
-                  </p>
-                )}
+                <p><strong>Servicio:</strong> {c.servicio}</p>
+                <p><strong>Duración:</strong> {c.duracionMin ? `${c.duracionMin} min` : "—"}</p>
               </div>
               <footer className={styles.cardFooter}>
-                {c.estado !== "completada" && c.estado !== "cancelada" && (
+                {c.estado === "pendiente" && (
+                  <button
+                    className={`${styles.btn} ${styles.btnSecundario}`}
+                    onClick={() => confirmarCita(c.id)}
+                  >
+                    Confirmar
+                  </button>
+                )}
+                {c.estado !== "cancelada" && (
                   <button
                     className={`${styles.btn} ${styles.btnPrimario}`}
                     onClick={() => marcarCompletada(c.id)}
+                    disabled={c.estado === "confirmada"}
+                    title={c.estado === "confirmada" ? "Ya está confirmada" : "Marcar atendida"}
                   >
                     Marcar atendida
                   </button>
                 )}
-                {c.estado !== "cancelada" && c.estado !== "completada" && (
+                {c.estado !== "cancelada" && (
                   <button
                     className={`${styles.btn} ${styles.btnPeligro}`}
                     onClick={() => cancelarCita(c.id)}
