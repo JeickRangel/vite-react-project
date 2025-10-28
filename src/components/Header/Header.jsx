@@ -24,8 +24,8 @@ function Header({ title }) {
       <nav className={styles.nav}>
         <Link to="/admin/Inicio">Inicio</Link>
         <Link to="/admin/reservas">Reservas</Link>
-        <Link to="/admin/servicios">Servicios</Link> 
-        <Link to="/admin/AdminBarberos">Barberos</Link>
+        <Link to="/admin/servicios">Servicios</Link>
+        {/* <Link to="/admin/AdminBarberos">Barberos</Link> */}
         <Link to="/admin/AdminDisponibilidad">Disponibilidad</Link>
         <Link to="/admin/AdminUsuarios">Usuarios</Link>
         <Link to="/admin/reportes">Reportes</Link>

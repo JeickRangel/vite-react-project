@@ -61,12 +61,15 @@ const ServiciosCliente = () => {
               <p>{s.descripcion}</p>
               <span className={styles.precio}>{money(s.precio)}</span>
 
-              {/* Botón para reservar este servicio */}
-              <div style={{ marginTop: ".5rem" }}>
-                <button onClick={() => irAReservar(s.id_servicio)}>
-                  Reservar
-                </button>
-              </div>
+<div className={styles.actions}>
+  <button
+    type="button"
+    className={styles.btnReservar}
+    onClick={() => irAReservar(s.id_servicio)}
+  >
+    Reservar
+  </button>
+</div>
             </div>
           ))}
         </div>
