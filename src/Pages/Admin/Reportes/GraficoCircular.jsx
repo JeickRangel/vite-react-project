@@ -1,33 +1,37 @@
+// src/components/AdminReportes/GraficoCircular.jsx
 import React from "react";
-import { PieChart, Pie, Tooltip, Legend, Cell } from "recharts";
+import { PieChart, Pie, Tooltip, Legend, Cell, ResponsiveContainer } from "recharts";
 
-const datosServicios = [
-  { nombre: "Corte", valor: 40 },
-  { nombre: "Barba", valor: 25 },
-  { nombre: "Coloración", valor: 35 },
-];
+const colores = ["#2563eb", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4", "#84cc16"];
 
-const colores = ["#0088FE", "#00C49F", "#FFBB28"];
-
-export default function GraficoCircular() {
+export default function GraficoCircular({
+  data = [],
+  dataKey = "valor",
+  nameKey = "nombre",
+  titulo = "Distribución",
+}) {
   return (
-    <PieChart width={400} height={400}>
-      <Pie
-        data={datosServicios}
-        dataKey="valor"
-        nameKey="nombre"
-        cx="50%"
-        cy="50%"
-        outerRadius={120}
-        fill="#8884d8"
-        label
-      >
-        {datosServicios.map((entrada, index) => (
-          <Cell key={`cell-${index}`} fill={colores[index % colores.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
+    <div style={{ width: "100%", height: 340 }}>
+      <h4 style={{ margin: "8px 0 12px" }}>{titulo}</h4>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey={dataKey}
+            nameKey={nameKey}
+            cx="50%"
+            cy="50%"
+            outerRadius={110}
+            label
+          >
+            {data.map((_, i) => (
+              <Cell key={i} fill={colores[i % colores.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

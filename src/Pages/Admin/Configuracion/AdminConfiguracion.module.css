@@ -1,0 +1,164 @@
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.flash {
+  margin: 8px 0 16px;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  color: #2e7d32;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.cardHeader { margin-bottom: 14px; }
+.cardTitle { margin: 0; font-size: 18px; font-weight: 700; }
+.cardSub { margin: 6px 0 0; color: #6b7280; }
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btnPrimary {
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.btnPrimary:hover { background: #1e40af; }
+
+.btnGhost {
+  background: #fff;
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.btnGhost:hover { background: #f3f4f6; }
+
+.btnDanger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.btnDanger:hover { background: #dc2626; }
+
+.hint { color: #6b7280; font-size: 13px; }
+.empty { color: #6b7280; font-size: 14px; padding: 10px 4px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media (min-width: 720px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+.dayRow {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: #fafafa;
+}
+.dayTitle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 600;
+}
+.hours {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hours label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #374151;
+}
+.hours input[type="time"] {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.holidaysBox { margin-top: 14px; }
+.subTitle { font-size: 16px; margin: 0 0 8px; }
+.holidayRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.input {
+  padding: 8px 10px;
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+}
+.holidayList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.holidayItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+.switch input { display: none; }
+.slider {
+  position: absolute; inset: 0;
+  background: #e5e7eb;
+  border-radius: 999px;
+  transition: .2s;
+}
+.slider::before {
+  content: "";
+  position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px;
+  background: #fff; border-radius: 999px;
+  transition: .2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.switch input:checked + .slider { background: #1d4ed8; }
+.switch input:checked + .slider::before { transform: translateX(22px); }

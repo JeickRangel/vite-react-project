@@ -1,0 +1,348 @@
+/* ===========================
+   AdminReportes.module.css
+   =========================== */
+
+/* Layout base */
+.reportesContainer {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Título y descripción */
+.titulo {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1f2937; /* gris oscuro */
+}
+
+.descripcion {
+  color: #6b7280; /* gris medio */
+  margin-bottom: 18px;
+}
+
+/* Mensajes */
+.flash {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ecfeff;      /* celeste muy suave */
+  border: 1px solid #bae6fd; /* borde suave */
+  color: #075985;
+  font-size: 14px;
+}
+
+/* ===========================
+   Filtros
+   =========================== */
+.filtros {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  margin-bottom: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.row label {
+  grid-column: span 2;
+  color: #374151;
+  font-size: 14px;
+}
+
+.row input[type="date"],
+.row input[type="text"],
+.row select {
+  grid-column: span 4;
+  width: 100%;
+  appearance: none;
+  padding: 8px 10px;
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+  background: #fff;
+  color: #111827;
+  font-size: 14px;
+  outline: none;
+}
+
+.row input[type="date"]:focus,
+.row input[type="text"]:focus,
+.row select:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+/* Área de acciones */
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #111827; /* gris muy oscuro casi negro */
+  color: #fff;
+  border: 1px solid #111827;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover {
+  filter: brightness(1.02);
+}
+
+.ghost {
+  background: #fff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.ghost:hover {
+  background: #f9fafb;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Responsive filtros */
+@media (max-width: 960px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .row label {
+    grid-column: span 1;
+  }
+  .row input[type="date"],
+  .row input[type="text"],
+  .row select {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .row label {
+    grid-column: 1 / -1;
+  }
+  .row input[type="date"],
+  .row input[type="text"],
+  .row select {
+    grid-column: 1 / -1;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .spacer {
+    display: none;
+  }
+}
+
+/* ===========================
+   KPIs (tarjetas)
+   =========================== */
+.gridReportes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  opacity: .9;
+}
+
+/* Dot de color sutil (puedes ajustar a tu paleta) */
+.azul { background: #93c5fd; }
+.verde { background: #86efac; }
+.morado { background: #c4b5fd; }
+.naranja { background: #fdba74; }
+
+.numero {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+@media (max-width: 960px) {
+  .gridReportes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .gridReportes {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   Gráficas
+   =========================== */
+.estadisticas {
+  margin-top: 10px;
+}
+
+.contenedorGraficos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.graphCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  display: grid;
+  place-items: center;
+  min-height: 320px; /* para que no colapse cuando el chart se monta */
+}
+
+@media (max-width: 960px) {
+  .contenedorGraficos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panel pequeño bajo gráficos */
+.panelResumen {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+  color: #374151;
+}
+
+.panelResumen > div {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 720px) {
+  .panelResumen {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .panelResumen {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   Tabla detalle
+   =========================== */
+.tablaWrap {
+  margin-top: 18px;
+}
+
+.scrollX {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px; /* permite scroll en móviles si hay muchas columnas */
+}
+
+.tabla thead th {
+  background: #f3f4f6;
+  color: #374151;
+  text-align: left;
+  font-weight: 700;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.tabla tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #111827;
+}
+
+.tabla tbody tr:hover {
+  background: #fafafa;
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Badges de estado */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  text-transform: capitalize;
+}
+
+.pendiente {
+  background: #fff7ed; /* naranja muy suave */
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.confirmada {
+  background: #eff6ff; /* azul muy suave */
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.completada {
+  background: #ecfdf5; /* verde muy suave */
+  color: #065f46;
+  border: 1px solid #bbf7d0;
+}
+
+.cancelada {
+  background: #fef2f2; /* rojo muy suave */
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
