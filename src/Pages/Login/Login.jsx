@@ -5,6 +5,11 @@ import logo from "../../assets/Logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser, getUser } from "../../utils/auth"; // ✅ importamos helpers
 
+
+// Componente Login para Netifly
+const DEMO_EMAIL = import.meta.env.VITE_ADMIN_EMAIL ?? "";
+const DEMO_PASS  = import.meta.env.VITE_ADMIN_PASS  ?? "";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +33,19 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorLogin("");
+
+    //para Netifly demo
+    // ✅ MODO DEMO: si coincide con las variables de Netlify, entrar sin backend
+  if (email === DEMO_EMAIL && password === DEMO_PASS) {
+    setUser({
+      id: 0,
+      nombre: "Admin Demo",
+      correo: DEMO_EMAIL,
+      rol: 1, // 1 = Admin (según tu lógica actual)
+    });
+    navigate("/admin/Inicio", { replace: true });
+    return; // 🚪 no seguimos al fetch
+  }
 
     const formData = new FormData();
     formData.append("email", email);
