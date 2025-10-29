@@ -26,7 +26,7 @@ import ServiciosCliente from "./Pages/Cliente/servicios/ServiciosCliente";
 import BarberosCliente from "./Pages/Cliente/barberos/BarberosCliente";
 import MisCitas from "./Pages/Cliente/mis_citas/MisCitas";
 import Contacto from "./Pages/Cliente/contacto/Contacto";
-import PQRS from "./Pages/Cliente/PQRS/pqrs";
+import PQRS from "./Pages/Cliente/PQRS/PQRS";
 
 // Páginas Empleado
 import InicioEmpleado from "./Pages/Empleado/InicioEmpleado/InicioEmpleado";
