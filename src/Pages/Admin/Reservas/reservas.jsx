@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./Reservas.module.css";
+import styles from "./reservas.module.css";
 
 export default function Reservas() {
   const [reservas, setReservas] = useState([]);
