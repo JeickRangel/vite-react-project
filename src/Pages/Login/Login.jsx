@@ -47,6 +47,28 @@ export default function Login() {
     return; // 🚪 no seguimos al fetch
   }
 
+  if (email === "empleado@demo.com" && password === "Empleado123!") {
+  setUser({
+    id: 0,
+    nombre: "Empleado Demo",
+    correo: email,
+    rol: 2, // 2 = Empleado
+  });
+  navigate("/Empleado/InicioEmpleado", { replace: true });
+  return;
+}
+
+if (email === "cliente@demo.com" && password === "Cliente123!") {
+  setUser({
+    id: 0,
+    nombre: "Cliente Demo",
+    correo: email,
+    rol: 3, // 3 = Cliente
+  });
+  navigate("/Cliente/inicio", { replace: true });
+  return;
+}
+
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
