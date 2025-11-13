@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./reservas.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 export default function Reservas() {
   const [reservas, setReservas] = useState([]);

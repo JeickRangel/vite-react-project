@@ -1,7 +1,7 @@
 // src/components/ClientesEmpleado.jsx
 import React, { useMemo, useState, useEffect } from "react";
 import styles from "./ClientesEmpleado.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 /* ================== CONFIG API ================== */
 //const API_BASE = "http://localhost/barberia_app/php";

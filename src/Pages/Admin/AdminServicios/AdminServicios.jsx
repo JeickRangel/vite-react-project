@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AdminServicios.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 const AdminServicios = () => {
   // Lista de servicios simulada

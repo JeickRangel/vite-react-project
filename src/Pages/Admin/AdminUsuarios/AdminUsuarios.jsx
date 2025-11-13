@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./AdminUsuarios.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 function AdminUsuarios() {
   const [modalAbierto, setModalAbierto] = useState(false);

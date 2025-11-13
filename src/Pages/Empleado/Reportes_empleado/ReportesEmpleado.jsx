@@ -5,7 +5,7 @@ import {
   BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip,
   ResponsiveContainer, Legend,
 } from "recharts";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 /* ====== CONFIG API ====== */
 //const API_BASE = "http://localhost/barberia_app/php";

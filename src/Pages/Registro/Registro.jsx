@@ -3,7 +3,7 @@ import styles from "./Registro.module.css";
 import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
 import { useNavigate } from "react-router-dom";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 export default function Registro() {
   const [formData, setFormData] = useState({

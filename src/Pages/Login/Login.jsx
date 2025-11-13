@@ -4,7 +4,7 @@ import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser, getUser } from "../../utils/auth"; // ✅ importamos helpers
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 
 // Componente Login para Netifly

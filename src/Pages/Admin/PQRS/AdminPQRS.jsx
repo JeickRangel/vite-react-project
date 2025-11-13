@@ -1,7 +1,7 @@
 // src/components/AdminPQRS.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import "./AdminPQRS.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 /* ===== API ===== */
 //const API_BASE = "http://localhost/barberia_app/php";

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import GraficoPrueba from "./GraficoPrueba";     // BarChart por día
 import GraficoCircular from "./GraficoCircular"; // Pie por servicio
 import styles from "./AdminReportes.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 //const API_BASE = "http://localhost/barberia_app/php";
 

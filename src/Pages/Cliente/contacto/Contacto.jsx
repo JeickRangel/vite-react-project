@@ -1,6 +1,6 @@
 import React from "react";
 import "./Contacto.css";
-import { API_BASE } from "../config/api";
+
 
 // Importar imágenes locales desde assets
 import instagram from "../../../assets/instagram.png";

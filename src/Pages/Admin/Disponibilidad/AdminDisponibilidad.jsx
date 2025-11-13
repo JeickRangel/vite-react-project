@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AdminDisponibilidad.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 export default function AdminDisponibilidad() {
   const [empleados, setEmpleados] = useState([]);

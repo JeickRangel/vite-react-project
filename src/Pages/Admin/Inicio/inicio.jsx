@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./inicio.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 //const API_BASE = "http://localhost/barberia_app/php";
 

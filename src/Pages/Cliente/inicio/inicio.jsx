@@ -1,9 +1,8 @@
-// src/components/inicio.jsx
 import { useEffect, useMemo, useState } from "react";
 import "./inicio.css";
 import barberiaAccion from "../../../assets/Barberia-en-accion.png";
 import { useNavigate } from "react-router-dom";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 //const API_BASE = "http://localhost/barberia_app/php";
 

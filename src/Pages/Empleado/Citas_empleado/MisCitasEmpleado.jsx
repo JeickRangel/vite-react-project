@@ -1,7 +1,7 @@
 // src/components/MisCitasEmpleado.jsx
 import { useEffect, useMemo, useState } from "react";
 import styles from "./MisCitasEmpleado.module.css";
-import { API_BASE } from "../config/api";
+import { API_BASE } from "/src/config/api";
 
 /* ===== Config API ===== */
 //const API_BASE = "http://localhost/barberia_app/php";
