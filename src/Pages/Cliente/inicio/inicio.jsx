@@ -7,7 +7,7 @@ import { API_BASE } from "../config/api";
 
 //const API_BASE = "http://localhost/barberia_app/php";
 
-const API_BASE = API_BASE;
+export const API_BASE = "https://barberia-render.onrender.com/barberia_app/php"
 const EP = { reservas: `${API_BASE}/reservas.php` };
 
 export default function Inicio({ currentUserId: currentUserIdProp }) {
