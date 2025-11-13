@@ -5,7 +5,7 @@ import { API_BASE } from "../config/api";
 
 /* ====== CONFIG API ====== */
 //const API_BASE = "http://localhost/barberia_app/php";
-export const API_BASE = "https://barberia-render.onrender.com/barberia_app/php"
+
 const EP = {
   usuarios: `${API_BASE}/usuarios.php`,
   upload:   `${API_BASE}/upload_foto.php`,

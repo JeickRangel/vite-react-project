@@ -6,7 +6,7 @@ import styles from "./AdminReportes.module.css";
 import { API_BASE } from "../config/api";
 
 //const API_BASE = "http://localhost/barberia_app/php";
-export const API_BASE = "https://barberia-render.onrender.com/barberia_app/php"
+
 const EP = {
   reservas: `${API_BASE}/reservas.php`,
   usuarios: `${API_BASE}/usuarios.php`,
