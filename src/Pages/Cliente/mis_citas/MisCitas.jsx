@@ -1,9 +1,11 @@
 // src/components/MisCitas.jsx
 import { useEffect, useMemo, useState } from "react";
 import "./MisCitas.css";
+import { API_BASE } from "../config/api";
 
 // misma base que usar en reservar.jsx
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;
 const EP = {
   reservas: `${API_BASE}/reservas.php`,
 };

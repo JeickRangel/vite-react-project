@@ -1,9 +1,11 @@
 // src/components/reservar.jsx
 import { useEffect, useMemo, useState } from "react";
 import "./reservar.css";
+import { API_BASE } from "../config/api";
 
 // Base de carpeta del backend
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;  
 const ROL_BARBERO_ID = 2; // ajusta si tu rol "Barbero" tiene otro id
 
 const EP = {

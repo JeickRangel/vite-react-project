@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./AdminUsuarios.module.css";
+import { API_BASE } from "../config/api";
 
 function AdminUsuarios() {
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -19,7 +20,8 @@ function AdminUsuarios() {
   }, []);
 
   const recargarUsuarios = () => {
-    fetch("http://localhost/barberia_app/php/usuarios.php")
+    //fetch("http://localhost/barberia_app/php/usuarios.php")
+    fetch(`${API_BASE}/usuarios.php`)
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((error) => console.error("Error cargando usuarios:", error));
@@ -72,7 +74,8 @@ function AdminUsuarios() {
     };
 
     try {
-      const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+      //const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+      const res = await fetch(`${API_BASE}/usuarios.php`, {
         method: usuarioEditando ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(usuarioData),
@@ -110,7 +113,8 @@ function AdminUsuarios() {
     if (!window.confirm("¿Seguro que quieres eliminar este usuario?")) return;
 
     try {
-      const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+      //const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+      const res = await fetch(`${API_BASE}/usuarios.php`, {
         method: "DELETE",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `id=${id}`,
@@ -132,7 +136,8 @@ function AdminUsuarios() {
   if (!window.confirm("¿Seguro que quieres reiniciar la contraseña a '123456'?")) return;
 
   try {
-    const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+    //const res = await fetch("http://localhost/barberia_app/php/usuarios.php", {
+    const res = await fetch(`${API_BASE}/usuarios.php`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, resetPassword: true }),

@@ -3,8 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import "./inicio.css";
 import barberiaAccion from "../../../assets/Barberia-en-accion.png";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../config/api";
 
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+
+const API_BASE = API_BASE;
 const EP = { reservas: `${API_BASE}/reservas.php` };
 
 export default function Inicio({ currentUserId: currentUserIdProp }) {

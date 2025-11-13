@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AdminBarberos.css";
+import { API_BASE } from "../config/api";
 
 export default function AdminBarberos() {
   const [barberos, setBarberos] = useState([

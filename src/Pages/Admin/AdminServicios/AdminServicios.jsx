@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AdminServicios.css";
+import { API_BASE } from "../config/api";
 
 const AdminServicios = () => {
   // Lista de servicios simulada
@@ -30,7 +31,9 @@ const AdminServicios = () => {
 
   // 🔹 1. Cargar servicios desde PHP
   useEffect(() => {
-    fetch("http://localhost/barberia_app/php/servicios.php")
+    // src/config/api.js
+    fetch(`${API_BASE}/servicios.php`)
+    //fetch("http://localhost/barberia_app/php/servicios.php")
       .then(res => res.json())
       .then(data => setServicios(data))
       .catch(err => console.error(err));
@@ -64,7 +67,8 @@ const AdminServicios = () => {
     e.preventDefault();
     const method = formData.id_servicio ? "PUT" : "POST";
 
-    fetch("http://localhost/barberia_app/php/servicios.php", {
+    fetch(`${API_BASE}/servicios.php`, {
+    //fetch("http://localhost/barberia_app/php/servicios.php", {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -72,7 +76,8 @@ const AdminServicios = () => {
       .then(res => res.json())
       .then(() => {
         // Refrescar lista después de guardar
-        return fetch("http://localhost/barberia_app/php/servicios.php")
+        //return fetch("http://localhost/barberia_app/php/servicios.php")
+        return fetch(`${API_BASE}/servicios.php`)
           .then(res => res.json())
           .then(data => setServicios(data));
       });
@@ -81,7 +86,8 @@ const AdminServicios = () => {
 
   // 🔹 3. Eliminar servicio
   const eliminarServicio = () => {
-    fetch("http://localhost/barberia_app/php/servicios.php", {
+    fetch(`${API_BASE}/servicios.php`, {
+    //fetch("http://localhost/barberia_app/php/servicios.php", {
       method: "DELETE",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `id_servicio=${servicioAEliminar.id_servicio}`,

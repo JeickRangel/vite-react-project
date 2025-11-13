@@ -3,6 +3,7 @@ import styles from "./Registro.module.css";
 import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../config/api";
 
 export default function Registro() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,8 @@ export default function Registro() {
         datos.append(key, value)
       );
 
-      const res = await fetch("http://localhost/barberia_app/php/guardar.php", {
+      //const res = await fetch("http://localhost/barberia_app/php/guardar.php", {
+      const res = await fetch(`${API_BASE}/guardar.php`, {
         method: "POST",
         body: datos,
       });

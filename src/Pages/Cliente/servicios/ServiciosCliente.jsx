@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // si no usas router, puedes quitarlo
 import styles from "./ServiciosCliente.module.css";
+import { API_BASE } from "../config/api";
 
 // MISMA BASE que usas en reservar.jsx
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;
 const EP = {
   servicios: `${API_BASE}/servicios.php`,
 };

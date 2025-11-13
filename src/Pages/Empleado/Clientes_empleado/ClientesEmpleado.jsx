@@ -1,9 +1,11 @@
 // src/components/ClientesEmpleado.jsx
 import React, { useMemo, useState, useEffect } from "react";
 import styles from "./ClientesEmpleado.module.css";
+import { API_BASE } from "../config/api";
 
 /* ================== CONFIG API ================== */
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;
 const EP = {
   usuarios: `${API_BASE}/usuarios.php`,
   reservas: `${API_BASE}/reservas.php`,

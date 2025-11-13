@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./inicio.css";
+import { API_BASE } from "../config/api";
 
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;
 const EP = {
   reservas:  `${API_BASE}/reservas.php`,   // soporta ?fecha_inicio=YYYY-MM-DD&fecha_fin=YYYY-MM-DD
   usuarios:  `${API_BASE}/usuarios.php`,   // GET lista

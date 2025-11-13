@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AdminConfiguracion.module.css";
+import { API_BASE } from "../config/api";
 
 /* ====== ENDPOINTS ====== */
 const API_BASE = "http://localhost/barberia_app/php";

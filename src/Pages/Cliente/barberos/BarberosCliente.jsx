@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // si no usas router, puedes quitarlo
 import styles from "./BarberosCliente.module.css";
+import { API_BASE } from "../config/api";
 
 // MISMA base que en tus otros módulos
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;
 const ROL_BARBERO_ID = 2; // 👈 ajusta si el id del rol "Barbero" es otro
 
 const EP = {

@@ -1,9 +1,11 @@
 // src/components/MisCitasEmpleado.jsx
 import { useEffect, useMemo, useState } from "react";
 import styles from "./MisCitasEmpleado.module.css";
+import { API_BASE } from "../config/api";
 
 /* ===== Config API ===== */
-const API_BASE = "http://localhost/barberia_app/php";
+//const API_BASE = "http://localhost/barberia_app/php";
+const API_BASE = API_BASE;  
 const EP = { reservas: `${API_BASE}/reservas.php` };
 
 /* Utilidad: formatear fecha en es-CO */

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AdminDisponibilidad.module.css";
+import { API_BASE } from "../config/api";
 
 export default function AdminDisponibilidad() {
   const [empleados, setEmpleados] = useState([]);
@@ -13,7 +14,8 @@ export default function AdminDisponibilidad() {
   const [modalAbierto, setModalAbierto] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost/barberia_app/php/usuarios.php?rol=2") // 2 = Empleado
+    //fetch("http://localhost/barberia_app/php/usuarios.php?rol=2") // 2 = Empleado
+    fetch(`${API_BASE}/usuarios.php?rol=2`) // 2 = Empleado
       .then(res => res.json())
       .then(data => setEmpleados(data))
       .catch(err => console.error(err));
@@ -21,7 +23,8 @@ export default function AdminDisponibilidad() {
 
   const cargarDisponibilidad = (id) => {
     setIdEmpleado(id);
-    fetch(`http://localhost/barberia_app/php/disponibilidad.php?id_usuario=${id}`)
+    //fetch(`http://localhost/barberia_app/php/disponibilidad.php?id_usuario=${id}`)
+    fetch(`${API_BASE}/disponibilidad.php?id_usuario=${id}`)
       .then(res => res.json())
       .then(data => setDisponibilidad(data))
       .catch(err => console.error(err));
@@ -43,7 +46,8 @@ export default function AdminDisponibilidad() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost/barberia_app/php/disponibilidad.php", {
+    //fetch("http://localhost/barberia_app/php/disponibilidad.php", {
+    fetch(`${API_BASE}/disponibilidad.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...formData, id_usuario: idEmpleado }),
@@ -57,7 +61,9 @@ export default function AdminDisponibilidad() {
 
   const eliminarDisponibilidad = (id) => {
     if (window.confirm("¿Seguro que deseas eliminar este horario?")) {
-      fetch("http://localhost/barberia_app/php/disponibilidad.php", {
+      //fetch("http://localhost/barberia_app/php/disponibilidad.php", {
+      
+      fetch(`${API_BASE}/disponibilidad.php`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_disponibilidad: id }),

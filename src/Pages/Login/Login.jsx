@@ -4,6 +4,7 @@ import fondo from "../../assets/Fondo.jpg";
 import logo from "../../assets/Logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser, getUser } from "../../utils/auth"; // ✅ importamos helpers
+import { API_BASE } from "../config/api";
 
 
 // Componente Login para Netifly
@@ -74,7 +75,8 @@ if (email === "cliente@demo.com" && password === "Cliente123!") {
     formData.append("password", password);
 
     try {
-      const res = await fetch("http://localhost/barberia_app/php/login.php", {
+      //const res = await fetch("http://localhost/barberia_app/php/login.php", {
+      const res = await fetch(`${API_BASE}/login.php`, {
         method: "POST",
         body: formData,
       });
