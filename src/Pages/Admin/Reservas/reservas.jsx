@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./reservas.module.css";
+import { API_BASE } from "../config/api";
 
 export default function Reservas() {
   const [reservas, setReservas] = useState([]);
@@ -23,7 +24,8 @@ export default function Reservas() {
 
   useEffect(() => {
   if (nuevaReserva.empleado_id && nuevaReserva.fecha && nuevaReserva.servicio_id) {
-    fetch(`http://localhost/barberia_app/php/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`)
+    //fetch(`http://localhost/barberia_app/php/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`)
+    fetch(`${API_BASE}/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`)
       .then(res => res.json())
       .then(setHorariosDisponibles)
       .catch(err => console.error("Error cargando horarios:", err));
