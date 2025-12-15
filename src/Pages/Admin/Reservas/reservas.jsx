@@ -13,7 +13,6 @@ export default function Reservas() {
   const [filtroActivo, setFiltroActivo] = useState("todos");
   const [horariosDisponibles, setHorariosDisponibles] = useState([]);
 
-
   const [nuevaReserva, setNuevaReserva] = useState({
     cliente_id: "",
     empleado_id: "",
@@ -22,48 +21,59 @@ export default function Reservas() {
     hora: "",
   });
 
+  /* ✅ Cargar reservas */
   useEffect(() => {
-  if (nuevaReserva.empleado_id && nuevaReserva.fecha && nuevaReserva.servicio_id) {
-    //fetch(`http://localhost/barberia_app/php/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`)
-    fetch(`${API_BASE}/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`)
-      .then(res => res.json())
-      .then(setHorariosDisponibles)
-      .catch(err => console.error("Error cargando horarios:", err));
-  }
-}, [nuevaReserva.empleado_id, nuevaReserva.fecha, nuevaReserva.servicio_id]);
-
-
-  // 🔹 Cargar reservas
-  useEffect(() => {
-    fetch("http://localhost/barberia_app/php/reservas.php")
+    fetch(`${API_BASE}/reservas.php`)
       .then((res) => res.json())
       .then((data) => setReservas(data))
       .catch((err) => console.error("Error cargando reservas:", err));
   }, []);
 
-  // 🔹 Cargar clientes, empleados y servicios
+  /* ✅ Cargar clientes, empleados y servicios */
   useEffect(() => {
-    fetch("http://localhost/barberia_app/php/usuarios.php?rol=3")
+    fetch(`${API_BASE}/usuarios.php?rol=3`)
       .then((res) => res.json())
-      .then(setClientes);
+      .then(setClientes)
+      .catch((err) => console.error("Error cargando clientes:", err));
 
-    fetch("http://localhost/barberia_app/php/usuarios.php?rol=2")
+    fetch(`${API_BASE}/usuarios.php?rol=2`)
       .then((res) => res.json())
-      .then(setEmpleados);
+      .then(setEmpleados)
+      .catch((err) => console.error("Error cargando empleados:", err));
 
-    fetch("http://localhost/barberia_app/php/servicios.php")
+    fetch(`${API_BASE}/servicios.php`)
       .then((res) => res.json())
-      .then(setServicios);
+      .then(setServicios)
+      .catch((err) => console.error("Error cargando servicios:", err));
   }, []);
+
+  /* ✅ Cargar horarios disponibles */
+  useEffect(() => {
+    if (nuevaReserva.empleado_id && nuevaReserva.fecha && nuevaReserva.servicio_id) {
+      fetch(
+        `${API_BASE}/horarios_disponibles.php?empleado_id=${nuevaReserva.empleado_id}&fecha=${nuevaReserva.fecha}&servicio_id=${nuevaReserva.servicio_id}`
+      )
+        .then((res) => res.json())
+        .then(setHorariosDisponibles)
+        .catch((err) => console.error("Error cargando horarios:", err));
+    } else {
+      setHorariosDisponibles([]);
+    }
+  }, [nuevaReserva.empleado_id, nuevaReserva.fecha, nuevaReserva.servicio_id]);
 
   const handleChange = (e) => {
     setNuevaReserva({ ...nuevaReserva, [e.target.name]: e.target.value });
   };
 
+  const recargarReservas = async () => {
+    const res = await fetch(`${API_BASE}/reservas.php`);
+    setReservas(await res.json());
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost/barberia_app/php/reservas.php", {
+      const res = await fetch(`${API_BASE}/reservas.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(nuevaReserva),
@@ -73,20 +83,19 @@ export default function Reservas() {
       if (data.status === "OK") {
         alert("✅ Reserva creada");
         setModalCrear(false);
-
-        const res2 = await fetch("http://localhost/barberia_app/php/reservas.php");
-        setReservas(await res2.json());
+        await recargarReservas();
       } else {
-        alert("❌ " + data.message);
+        alert("❌ " + (data.message || "No se pudo crear la reserva"));
       }
     } catch (error) {
       console.error("Error al crear:", error);
+      alert("❌ Error de conexión al crear la reserva");
     }
   };
 
   const cambiarEstado = async (id_reserva, nuevoEstado) => {
     try {
-      const res = await fetch("http://localhost/barberia_app/php/reservas.php", {
+      const res = await fetch(`${API_BASE}/reservas.php`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_reserva, estado: nuevoEstado }),
@@ -100,10 +109,11 @@ export default function Reservas() {
           )
         );
       } else {
-        alert("❌ Error: " + data.message);
+        alert("❌ Error: " + (data.message || "No se pudo actualizar"));
       }
     } catch (error) {
       console.error("Error al actualizar estado:", error);
+      alert("❌ Error de conexión al actualizar");
     }
   };
 
@@ -130,12 +140,12 @@ export default function Reservas() {
             return true;
         }
       })
-      .filter((r) => (r.cliente || "").toLowerCase().includes(filtro.toLowerCase())
-);
+      .filter((r) =>
+        (r.cliente || "").toLowerCase().includes(filtro.toLowerCase())
+      );
   };
 
-  const capitalizar = (txt) =>
-    txt.charAt(0).toUpperCase() + txt.slice(1);
+  const capitalizar = (txt) => txt.charAt(0).toUpperCase() + txt.slice(1);
 
   return (
     <div className={styles.adminReservas}>
@@ -200,12 +210,14 @@ export default function Reservas() {
                 >
                   Cambiar estado
                 </button>
+
                 <button
                   className={`${styles.accionesBtn} ${styles.btnDetalle}`}
                   onClick={() => setModalDetalle(reserva)}
                 >
                   Ver detalle
                 </button>
+
                 <button
                   className={`${styles.accionesBtn} ${styles.btnCancelar}`}
                   onClick={() => {
@@ -216,13 +228,13 @@ export default function Reservas() {
                 >
                   Cancelar
                 </button>
+
                 <button
                   className={`${styles.accionesBtn} ${styles.btnCompletar}`}
                   onClick={() => cambiarEstado(reserva.id_reserva, "completada")}
                 >
                   Completar
                 </button>
-
               </td>
             </tr>
           ))}
@@ -312,17 +324,16 @@ export default function Reservas() {
               />
 
               <select
-  name="hora"
-  value={nuevaReserva.hora}
-  onChange={handleChange}
-  required
->
-  <option value="">Seleccione hora disponible</option>
-  {horariosDisponibles.map((h, i) => (
-    <option key={i} value={h}>{h}</option>
-  ))}
-</select>
-
+                name="hora"
+                value={nuevaReserva.hora}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Seleccione hora disponible</option>
+                {horariosDisponibles.map((h, i) => (
+                  <option key={i} value={h}>{h}</option>
+                ))}
+              </select>
 
               <div className={styles.modalAcciones}>
                 <button type="button" onClick={() => setModalCrear(false)}>

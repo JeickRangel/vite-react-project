@@ -1,11 +1,13 @@
+//Uso de useState y useEffect para manejar el estado y efectos secundarios
 import React, { useState, useEffect } from "react";
 import "./AdminServicios.css";
 import { API_BASE } from "/src/config/api";
 
 const AdminServicios = () => {
-  // Lista de servicios simulada
+  // Lista de servicios 
   const [servicios, setServicios] = useState([]);
 
+  //Formateador de moneda COP
   const formatoCOP = new Intl.NumberFormat("es-CO", {
   style: "currency",
   currency: "COP",
